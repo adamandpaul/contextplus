@@ -5,6 +5,8 @@ cache:
   - buildout/eggs
 matrix:
   fast_finish: true
+before_install:
+  - sudo apt-get install -y python3-venv
 install:
 - bin/bootstrap
 - bin/build annotate
