@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name='contextplus',
-      version='1.0.dev1',
+      version='1.0',
       description='contextplus',
       long_description=open('README.rst').read(),
       long_description_content_type='text/x-rst',
