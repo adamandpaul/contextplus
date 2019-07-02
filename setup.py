@@ -19,4 +19,6 @@ setup(name='contextplus',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'pyramid',
+          'wtforms',
       ])
