@@ -6,12 +6,13 @@ Primitive resource objects for use with traversal.
 
 Project Links:
 
-- `Documentation <https://contextplus.readthedocs.io/en/latest/>`_
-- `Repository <https://github.com/adamandpaul/contextplus>`_
-- `Continuous Integration <https://github.com/adamandpaul/contextplus>`_
+- `Distribution (PyPI) <https://pypi.org/project/contextplus>`_
+- `Documentation (Read the Docs) <https://contextplus.readthedocs.io/en/latest/>`_
+- `Repository (GitHub) <https://github.com/adamandpaul/contextplus>`_
+- `Continuous Integration (CircleCI) <https://circleci.com/gh/adamandpaul/contextplus>`_
 
-  .. image:: https://travis-ci.org/adamandpaul/contextplus.svg?branch=master
-    :target: https://travis-ci.org/adamandpaul/contextplus
+   .. image:: https://circleci.com/gh/adamandpaul/contextplus.svg?style=svg
+       :target: https://circleci.com/gh/adamandpaul/contextplus
 
 Development Tools
 =================
