@@ -1,0 +1,19 @@
+language: python
+python: 3.7
+sudo: false
+cache:
+  directories:
+  - buildout/eggs
+matrix:
+  fast_finish: true
+install:
+- bin/bootstrap
+- bin/build annotate
+- bin/build
+script:
+- bin/code-analysis
+- bin/test
+after_success:
+- bin/createcoverage
+- pip install coveralls
+- coveralls
