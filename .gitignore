@@ -35,4 +35,9 @@
 !/bin/bootstrap-production
 !/bin/build
 
+# Distribution ignors
+/build/
+/dist/
+
 # Package Ingore
+
