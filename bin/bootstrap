@@ -12,8 +12,9 @@ mkdir -p buildout/extends-cache
 
 # Create virtual environment upgrade pip and install setuptools and zc.buildout
 python3 -m venv buildout/py
-buildout/py/bin/pip install -U pip
-buildout/py/bin/pip install -U setuptools
+ls buildout/py/bin
+buildout/py/bin/pip3 install -U pip
+buildout/py/bin/pip3 install -U setuptools
 buildout/py/bin/easy_install -U zc.buildout
 
 # Pull sources first before first buildout
