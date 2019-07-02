@@ -3,10 +3,10 @@ jobs:
         build:
                 docker:
                         - image: python:3.7
-        steps:
-                - checkout
-                - run: bin/bootstrap
-                - run: bin/build annotate
-                - run: bin/build
-                - run: bin/code-analysis
-                - run: bin/test
+                steps:
+                        - checkout
+                        - run: bin/bootstrap
+                        - run: bin/build annotate
+                        - run: bin/build
+                        - run: bin/code-analysis
+                        - run: bin/test
