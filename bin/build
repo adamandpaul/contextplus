@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+echo 'building...'
+
+# put us in the correct dir
+BUILDOUT_DIR=`dirname "$0"`/..
+cd $BUILDOUT_DIR
+
+# Set the prepend the bin dir to the path
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # Support MacOS, assuming `brew install coreutils` has been run, see
+  # https://stackoverflow.com/a/4031502
+  echo 'MacOS'
+  SCRIPT=$(greadlink -f "$0")
+else
+  # Assume linux, e.g. Fedora
+  echo 'Linux'
+  SCRIPT=$(readlink -f "$0")
+fi
+BIN_DIR=$(dirname "$SCRIPT")
+export PATH=$BIN_DIR:$PATH
+
+# Set the source commit
+export SOURCE_COMMIT=`git rev-parse HEAD`
+
+set -x
+exec buildout/py/bin/buildout "$@"
