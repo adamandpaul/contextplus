@@ -9,6 +9,7 @@ Project Links:
 - `Documentation <https://contextplus.readthedocs.io/en/latest/>`_
 - `Repository <https://github.com/adamandpaul/contextplus>`_
 - `Continuous Integration <https://github.com/adamandpaul/contextplus>`_
+
   .. image:: https://travis-ci.org/adamandpaul/contextplus.svg?branch=master
     :target: https://travis-ci.org/adamandpaul/contextplus
 
