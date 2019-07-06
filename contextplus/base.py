@@ -5,26 +5,16 @@ centered around a URL travseral system.
 
 from . import acquision
 from . import exc
+from .behaviours import BehaviourLogging
 from collections import OrderedDict
 from pyramid.decorator import reify
 from typing import Iterable
 from typing import Optional
 
-import logging
 import zlib
 
 
-class AdaptComponentLoggerToLogger(object):
-    """Adapt a component logger to a logging.Logger interface"""
-
-    def __init__(self, context):
-        self._context = context
-
-    def info(self, message):
-        self._context.log_info(message)
-
-
-class DomainBase(object):
+class DomainBase(BehaviourLogging):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
@@ -282,13 +272,3 @@ class DomainBase(object):
         after = getattr(self, f'workflow_after_{action}', None)
         if after is not None:
             after()
-
-    # Logger prooperty
-    @property
-    def logger(self):
-        """Return a logger interface"""
-        logger = self.acquire.get_logger()
-        if isinstance(logger, logging.Logger):
-            return logger
-        else:
-            return AdaptComponentLoggerToLogger(logger)
