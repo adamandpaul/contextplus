@@ -23,7 +23,7 @@ class TestDomainBaseNoParent(TestCase):
         d = self.domain
         d.set_name(None)
         with self.assertRaises(AttributeError):
-            d.name
+            d.__name__
 
     def test_simple_attributes(self):
         d = self.domain

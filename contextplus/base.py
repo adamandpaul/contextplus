@@ -65,4 +65,4 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, Beh
 
     def set_name(self, name: str = None):
         """Allow setting the name"""
-        self._name = name
+        self.name = name
