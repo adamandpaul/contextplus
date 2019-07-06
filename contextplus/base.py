@@ -6,6 +6,7 @@ centered around a URL travseral system.
 from . import acquision
 from .behaviours import BehaviourLogging
 from .behaviours import BehaviourTinterface
+from .behaviours import BehaviourTraversal
 from .behaviours import BehaviourWorkflow
 from collections import OrderedDict
 from pyramid.decorator import reify
@@ -15,7 +16,7 @@ from typing import Optional
 import zlib
 
 
-class DomainBase(BehaviourLogging, BehaviourTinterface, BehaviourWorkflow):
+class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourLogging):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
@@ -161,10 +162,3 @@ class DomainBase(BehaviourLogging, BehaviourTinterface, BehaviourWorkflow):
     def description(self) -> str:
         """A short description of the this object"""
         return ''
-
-    def get(self, key: str, default=None):
-        """Convienence method to return a default value when there is a KeyError"""
-        try:
-            return self.__getitem__(key)
-        except KeyError:
-            return default

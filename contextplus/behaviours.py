@@ -73,6 +73,25 @@ class BehaviourWorkflow(object):
             after()
 
 
+class BehaviourTraversal(object):
+    """Behaviour to allow items to be traversed"""
+
+    def __getitem__(self, key: str):
+        """Return an items contained in this domain object.
+
+        Raises:
+            DomainTraversalKeyError: If there is not item to return
+        """
+        raise exc.DomainTraversalKeyError(key)
+
+    def get(self, key: str, default=None):
+        """Convienence method to return a default value when there is a KeyError"""
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
+
+
 class BehaviourTinterface(object):
     """Behaviour to allow item factories for a given traversal name"""
 
@@ -128,8 +147,6 @@ class BehaviourTinterface(object):
                     if tinterface is not None:
                         yield factory()
 
-    # Traversal
-
     def __getitem__(self, key: str):
         """Return an items contained in this domain object.
 
@@ -141,4 +158,4 @@ class BehaviourTinterface(object):
         if item is not None:
             return item
         else:
-            raise exc.DomainTraversalKeyError(key)
+            return super().__getitem__(key)
