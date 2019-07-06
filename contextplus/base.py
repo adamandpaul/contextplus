@@ -4,8 +4,8 @@ centered around a URL travseral system.
 """
 
 from . import acquision
-from . import exc
 from .behaviours import BehaviourLogging
+from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourWorkflow
 from collections import OrderedDict
 from pyramid.decorator import reify
@@ -15,7 +15,7 @@ from typing import Optional
 import zlib
 
 
-class DomainBase(BehaviourLogging, BehaviourWorkflow):
+class DomainBase(BehaviourLogging, BehaviourTinterface, BehaviourWorkflow):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
@@ -161,73 +161,6 @@ class DomainBase(BehaviourLogging, BehaviourWorkflow):
     def description(self) -> str:
         """A short description of the this object"""
         return ''
-
-    # Traversal features - tinterfaces
-
-    def get_tinterface(self, name: str, default=None):
-        """Return an tinterface for a given name.
-
-        tinterfaces are traversable by self[name], this function is called
-        by __getitem__ to obtain the object for a given name. By defeault this
-        function looks object factories which are marked on the class with the attribute
-        tinterface_factory_for. get_tinterfaces doesn't iterate through the instance
-        properties inorder to prevent bringing into memory evey attribute.
-
-        tinterface_factory_for can only be a string. For example:
-
-            class A(DomainBase):
-
-                def get_blahs_collection(self):
-                    return Blahs()
-                get_blah_collection.tinterface_factory_for = 'blahs'
-
-        Then A()['blahs'] would be an instance of Blahs.
-
-        Note that on successive calls a new object is returned to prevent any circular references occuring.
-
-        Arguments:
-            name: The name of the tinterface. This must be a string.
-            default: The object to be retuned if no tinerface was found.
-
-        Returns:
-            object: If the the tinterface is found
-            None: If no tinterface is found
-        """
-        cls = type(self)
-        for cls_name in dir(cls):
-            cls_item = getattr(cls, cls_name, None)
-            if cls_item is not None:
-                if getattr(cls_item, 'tinterface_factory_for', None) == name:
-                    factory = getattr(self, cls_name)
-                    return factory()
-        return default
-
-    def iter_tinterfaces(self) -> Iterable:
-        """Iterate through tinterfaces"""
-        cls = type(self)
-        for cls_name in dir(cls):
-            cls_item = getattr(cls, cls_name, None)
-            if cls_item is not None:
-                if getattr(cls_item, 'tinterface_factory_for', None) is not None:
-                    factory = getattr(self, cls_name)
-                    tinterface = factory()
-                    if tinterface is not None:
-                        yield factory()
-
-    # Traversal
-
-    def __getitem__(self, key: str):
-        """Return an items contained in this domain object.
-
-        Raises:
-            DomainTraversalKeyError: If there is not item to return
-        """
-        assert isinstance(key, str), 'Only string keys are supported on __getitem__'
-        item = self.get_tinterface(key)
-        if item is not None:
-            return item
-        else:
-            raise exc.DomainTraversalKeyError(key)
 
     def get(self, key: str, default=None):
         """Convienence method to return a default value when there is a KeyError"""
