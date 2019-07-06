@@ -8,12 +8,11 @@ from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourTraversal
 from .behaviours import BehaviourTraversalPathUtilities
 from .behaviours import BehaviourWorkflow
-from collections import OrderedDict
 from pyramid.decorator import reify
 from typing import Optional
 
 
-class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow,  BehaviourTraversalPathUtilities,
+class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourTraversalPathUtilities,
                  BehaviourLegacy):
     """The base domain object which all domain objects inherit.
 
