@@ -18,34 +18,13 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, Beh
     Designed to apply common functions to all domain objects.
     """
 
-    # == Class Methods ==
-
     @classmethod
     def get_meta_title(cls) -> str:
         """A human readable title of the kind of object"""
         return cls.__name__
 
-    # == Properties ==
-
-    # Name. As in the name in the traversal parth
-
-    _name = None
-
-    @property
-    def name(self):
-        """Return the name unless it is None. In which case throw an AttributeError"""
-        if self._name is None:
-            raise AttributeError('Name not yet set')
-        return self._name
-
-    __name__ = name  # pyramid expects this as the name interface
-
+    name = None
     parent = None
-
-    @property
-    def __parent__(self):
-        """Pyramid traversal interface"""
-        return self.parent
 
     @property
     def title(self) -> str:
@@ -62,7 +41,17 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, Beh
         """A short description of the this object"""
         return ''
 
-    # == Methods ==
+    @property
+    def __name__(self):
+        """Return the name unless it is None. In which case throw an AttributeError"""
+        if self.name is None:
+            raise AttributeError('Name not yet set')
+        return self.name
+
+    @property
+    def __parent__(self):
+        """Pyramid traversal interface"""
+        return self.parent
 
     def __init__(self, parent=None, name: Optional[str] = None):
         """Initalize the DomainBase object
