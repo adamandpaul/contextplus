@@ -3,20 +3,17 @@
 centered around a URL travseral system.
 """
 
-from . import acquision
 from .behaviours import BehaviourLogging
 from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourTraversal
+from .behaviours import BehaviourTraversalPathUtilities
 from .behaviours import BehaviourWorkflow
 from collections import OrderedDict
 from pyramid.decorator import reify
-from typing import Iterable
 from typing import Optional
 
-import zlib
 
-
-class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourLogging):
+class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourLogging, BehaviourTraversalPathUtilities):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
@@ -100,41 +97,6 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, Beh
     def __parent__(self):
         """Pyramid traversal interface"""
         return self.parent
-
-    # Navigating up the tree and adding acquision
-
-    def iter_ancestors(self) -> Iterable['DomainBase']:
-        current = self.parent
-        while current is not None:
-            yield current
-            current = current.parent
-
-    @reify
-    def path_names(self):
-        """Return a tuple of path names"""
-        items = []
-        for item in sorted(list(self.iter_ancestors()), reverse=True):
-            items.append(item.name)
-        items.append(self.name)
-        return tuple(items)
-
-    @reify
-    def path_hash(self):
-        data = repr(self.path_names).encode('utf8')
-        return hex(zlib.adler32(data))[2:]
-
-    @reify
-    def root(self) -> 'DomainBase':
-        """Return the root object"""
-        highest = self
-        for ancestor in self.iter_ancestors():
-            highest = ancestor
-        return highest
-
-    @reify
-    def acquire(self):
-        """Return the acquision proxy from self"""
-        return acquision.AcquisitionProxy(self)
 
     # Human friendly titles descriptions
 

@@ -2,10 +2,13 @@
 """Module of resource behaviours
 """
 
+from . import acquision
 from . import exc
+from pyramid.decorator import reify
 from typing import Iterable
 
 import logging
+import zlib
 
 
 class AdaptComponentLoggerToLogger(object):
@@ -159,3 +162,42 @@ class BehaviourTinterface(object):
             return item
         else:
             return super().__getitem__(key)
+
+
+class BehaviourTraversalPathUtilities(object):
+    """Behaviour which adds traversal path utilites to the domian object"""
+
+    # Navigating up the tree and adding acquision
+
+    def iter_ancestors(self):
+        current = self.parent
+        while current is not None:
+            yield current
+            current = current.parent
+
+    @reify
+    def path_names(self):
+        """Return a tuple of path names"""
+        items = []
+        for item in sorted(list(self.iter_ancestors()), reverse=True):
+            items.append(item.name)
+        items.append(self.name)
+        return tuple(items)
+
+    @reify
+    def path_hash(self):
+        data = repr(self.path_names).encode('utf8')
+        return hex(zlib.adler32(data))[2:]
+
+    @reify
+    def root(self):
+        """Return the root object"""
+        highest = self
+        for ancestor in self.iter_ancestors():
+            highest = ancestor
+        return highest
+
+    @reify
+    def acquire(self):
+        """Return the acquision proxy from self"""
+        return acquision.AcquisitionProxy(self)
