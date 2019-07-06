@@ -1,7 +1,11 @@
 # -*- coding:utf-8 -*-
 
 
-from pyramid.httpexceptions import HTTPForbidden
+try:
+    from pyramid.httpexceptions import HTTPForbidden
+except ImportError:
+    class HTTPForbidden(Exception):
+        """Placeholder class for when pyramid is not available"""
 
 
 class DomainError(Exception):

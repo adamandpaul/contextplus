@@ -4,8 +4,8 @@
 
 from . import acquision
 from . import exc
+from .reify import reify
 from collections import OrderedDict
-from pyramid.decorator import reify
 from typing import Iterable
 
 import logging

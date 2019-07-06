@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from . import base
-from pyramid.decorator import reify
+from .reify import reify
 
 import logging
 import weakref

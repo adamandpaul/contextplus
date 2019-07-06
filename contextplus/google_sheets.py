@@ -2,8 +2,8 @@
 
 from . import collection
 from . import mapping
+from .reify import reify
 from collections import OrderedDict
-from pyramid.decorator import reify
 
 
 class DomainGoogleSheetsRow(mapping.DomainMapping):

@@ -8,7 +8,7 @@ from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourTraversal
 from .behaviours import BehaviourTraversalPathUtilities
 from .behaviours import BehaviourWorkflow
-from pyramid.decorator import reify
+from .reify import reify
 from typing import Optional
 
 

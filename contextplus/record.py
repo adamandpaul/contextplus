@@ -3,7 +3,7 @@
 
 from . import base
 from . import exc
-from pyramid.decorator import reify
+from .reify import reify
 
 
 class DomainRecord(base.DomainBase):
