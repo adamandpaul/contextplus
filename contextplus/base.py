@@ -4,7 +4,6 @@ centered around a URL travseral system.
 """
 
 from .behaviours import BehaviourLegacy
-from .behaviours import BehaviourLogging
 from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourTraversal
 from .behaviours import BehaviourTraversalPathUtilities
@@ -14,7 +13,7 @@ from pyramid.decorator import reify
 from typing import Optional
 
 
-class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourLogging, BehaviourTraversalPathUtilities,
+class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow,  BehaviourTraversalPathUtilities,
                  BehaviourLegacy):
     """The base domain object which all domain objects inherit.
 

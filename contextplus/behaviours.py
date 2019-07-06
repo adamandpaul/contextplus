@@ -4,34 +4,12 @@
 
 from . import acquision
 from . import exc
+from collections import OrderedDict
 from pyramid.decorator import reify
 from typing import Iterable
 
 import logging
 import zlib
-
-
-class AdaptComponentLoggerToLogger(object):
-    """Adapt a component logger to a logging.Logger interface"""
-
-    def __init__(self, context):
-        self._context = context
-
-    def info(self, message):
-        self._context.log_info(message)
-
-
-class BehaviourLogging(object):
-    """Facility for a domain object to log information"""
-
-    @property
-    def logger(self):
-        """Return a logger interface"""
-        logger = self.acquire.get_logger()
-        if isinstance(logger, logging.Logger):
-            return logger
-        else:
-            return AdaptComponentLoggerToLogger(logger)
 
 
 class BehaviourWorkflow(object):
@@ -203,6 +181,16 @@ class BehaviourTraversalPathUtilities(object):
         return acquision.AcquisitionProxy(self)
 
 
+class AdaptComponentLoggerToLogger(object):
+    """Adapt a component logger to a logging.Logger interface"""
+
+    def __init__(self, context):
+        self._context = context
+
+    def info(self, message):
+        self._context.log_info(message)
+
+
 class BehaviourLegacy(object):
     """Behaviours which are potentially will be removed in the future"""
 
@@ -210,6 +198,15 @@ class BehaviourLegacy(object):
     def title_short(self) -> str:
         """Return a shortened version of the title of this object"""
         return self.title
+
+    @property
+    def logger(self):
+        """Return a logger interface"""
+        logger = self.acquire.get_logger()
+        if isinstance(logger, logging.Logger):
+            return logger
+        else:
+            return AdaptComponentLoggerToLogger(logger)
 
     # Information Properties
 
