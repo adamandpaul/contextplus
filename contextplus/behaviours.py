@@ -201,3 +201,54 @@ class BehaviourTraversalPathUtilities(object):
     def acquire(self):
         """Return the acquision proxy from self"""
         return acquision.AcquisitionProxy(self)
+
+
+class BehaviourLegacy(object):
+    """Behaviours which are potentially will be removed in the future"""
+
+    @reify
+    def title_short(self) -> str:
+        """Return a shortened version of the title of this object"""
+        return self.title
+
+    # Information Properties
+
+    @classmethod
+    def get_info_key_descriptions(cls):
+        """Return human redable descriptions for info keys"""
+        descriptions = OrderedDict([
+            ('object_title', 'Title'),
+            ('object_name', 'URL Name'),
+            ('object_meta_title', 'Type'),
+            ('object_description', 'Description'),
+            ('object_workflow_state', 'Workflow State'),
+        ])
+        return descriptions
+
+    @reify
+    def info(self):
+        """Return general information about the object"""
+        return OrderedDict()
+
+    @reify
+    def info_admin_profile(self):
+        """Return information userful for the admin profile"""
+        info = OrderedDict([
+            ('object_title', self.title),
+            ('object_name', self.name),
+            ('object_meta_title', self.get_meta_title()),
+            ('object_description', self.description),
+            ('object_workflow_state', self.workflow_state),
+        ])
+        info.update(self.info)
+        return info
+
+    @reify
+    def info_admin_export(self):
+        """An info dictionary for admin export. E.g. CSV file"""
+        return self.info_admin_profile
+
+    @reify
+    def api_get(self):
+        """Items returnd from an api"""
+        return {}
