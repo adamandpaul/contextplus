@@ -38,7 +38,7 @@ class DomainCollection(base.DomainBase):
         """Translate a wtform to a criteria"""
         return []
 
-    def filter(self, criteria: list = [], limit: int = None, offset: int = None) -> Iterable:
+    def filter(self, criteria: list = None, limit: int = None, offset: int = None) -> Iterable:
         """Return a filtered set of results.
 
         This implementation is very inefficient for big sets.
@@ -50,6 +50,8 @@ class DomainCollection(base.DomainBase):
         Raises:
             DomainCollectionUnsupportedCriteria: If criteria is given. This is upto subclasses to implement
         """
+        if criteria is None:
+            criteria = []
         if len(criteria) > 0:
             raise exc.DomainCollectionUnsupportedCriteria()
 
