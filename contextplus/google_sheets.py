@@ -20,7 +20,8 @@ class DomainGoogleSheetsRow(mapping.DomainMapping):
 class DomainGoogleSheetsRowCollection(collection.DomainCollection):
     """A collection of records sourced from google sheets
 
-    Requres a method in the acquision `cache_get`, `cache_set` and `google_sheets_api`
+    Requires a method in the acquisition ``cache_get``, ``cache_set`` and
+    ``google_sheets_api``
     """
 
     child_type = DomainGoogleSheetsRow

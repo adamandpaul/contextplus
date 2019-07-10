@@ -2,7 +2,7 @@
 """Module of resource behaviours
 """
 
-from . import acquision
+from . import acquisition
 from . import exc
 from .reify import reify
 from collections import OrderedDict
@@ -145,7 +145,7 @@ class BehaviourTinterface(object):
 class BehaviourTraversalPathUtilities(object):
     """Behaviour which adds traversal path utilites to the domian object"""
 
-    # Navigating up the tree and adding acquision
+    # Navigating up the tree and adding acquisition
 
     def iter_ancestors(self):
         current = self.parent
@@ -177,8 +177,8 @@ class BehaviourTraversalPathUtilities(object):
 
     @reify
     def acquire(self):
-        """Return the acquision proxy from self"""
-        return acquision.AcquisitionProxy(self)
+        """Return the acquisition proxy from self"""
+        return acquisition.AcquisitionProxy(self)
 
 
 class AdaptComponentLoggerToLogger(object):
