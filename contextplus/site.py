@@ -42,5 +42,6 @@ class Site(base.DomainBase):
         return self.get_request().redis
 
     def get_logger(self):
-        """Fall back logger for the entire site when get_logger is called from self.acquire"""
+        """Fall back logger for the entire site when ``get_logger`` is called
+        from ``self.acquire``"""
         return logging.getLogger(self.logger_name)

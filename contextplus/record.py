@@ -34,7 +34,8 @@ class DomainRecord(base.DomainBase):
     wtforms_record_edit_blank = None
 
     def wtforms_record_edit(self, data=None):
-        """Return an instance of the edit from, if data is supplied then init the form from data"""
+        """Return an instance of the edit from, if data is supplied then
+        init the form from data"""
         if data is not None:
             return self.wtforms_record_edit_blank(data)
         else:

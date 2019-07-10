@@ -34,7 +34,7 @@ class BehaviourWorkflow(object):
         start_state = self.workflow_state
         transition = self.workflow_transitions.get(action, None)
 
-        # Check that the transation is valid
+        # Check that the transition is valid
         if transition is None:
             raise exc.WorkflowUnknownActionError(f'Unknown workflow action {action} on {self.title}.')
         if start_state not in transition['from']:
@@ -143,7 +143,7 @@ class BehaviourTinterface(object):
 
 
 class BehaviourTraversalPathUtilities(object):
-    """Behaviour which adds traversal path utilites to the domian object"""
+    """Behaviour which adds traversal path utilities to the domain object"""
 
     # Navigating up the tree and adding acquisition
 
@@ -212,7 +212,7 @@ class BehaviourLegacy(object):
 
     @classmethod
     def get_info_key_descriptions(cls):
-        """Return human redable descriptions for info keys"""
+        """Return human readable descriptions for info keys"""
         descriptions = OrderedDict([
             ('object_title', 'Title'),
             ('object_name', 'URL Name'),
@@ -229,7 +229,7 @@ class BehaviourLegacy(object):
 
     @reify
     def info_admin_profile(self):
-        """Return information userful for the admin profile"""
+        """Return information useful for the admin profile"""
         info = OrderedDict([
             ('object_title', self.title),
             ('object_name', self.name),
@@ -247,5 +247,5 @@ class BehaviourLegacy(object):
 
     @reify
     def api_get(self):
-        """Items returnd from an api"""
+        """Items returned from an api"""
         return {}

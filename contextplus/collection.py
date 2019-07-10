@@ -44,11 +44,13 @@ class DomainCollection(base.DomainBase):
         This implementation is very inefficient for big sets.
 
         Args:
-            page_size: The maximum items to return
-            page: Used to calculate the offset together with the page size
+            criteria: This is up to subclasses to implement
+            limit: The maximum items to return
+            offset: Used to calculate the offset together with the page size
 
         Raises:
-            DomainCollectionUnsupportedCriteria: If criteria is given. This is upto subclasses to implement
+            DomainCollectionUnsupportedCriteria: If criteria is given.
+            This is up to subclasses to implement
         """
         if criteria is None:
             criteria = []

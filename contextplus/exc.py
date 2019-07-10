@@ -29,19 +29,21 @@ class DomainCollectionError(DomainError):
 
 
 class DomainCollectionNotListable(DomainCollectionError):
-    """Raised when an atempt is made to list items in a collection which is unlistable"""
+    """Raised when an attempt is made to list items in a collection
+    which cannot be listed"""
 
 
 class DomainCollectionUnsupportedCriteria(DomainCollectionError):
-    """Raised when a criteria is given to a collection which is not supported"""
+    """Raised when a criteria is given to a collection which is not
+    supported"""
 
 
 class DomainRecordIdTypeError(DomainError, TypeError):
-    """Raised when atempting to construct an ID type"""
+    """Raised when attempting to construct an ID type"""
 
 
 class DomainRecordUpdateError(DomainError):
-    """Raised when an update failure occured"""
+    """Raised when an update failure occurred"""
 
 
 class WorkflowTransitionError(DomainError):
@@ -53,4 +55,5 @@ class WorkflowUnknownActionError(WorkflowTransitionError):
 
 
 class WorkflowIllegalTransitionError(WorkflowTransitionError):
-    """Raised when the workflow transition is correct but wasn't allowed from the current state"""
+    """Raised when the workflow transition is correct but wasn't allowed
+    from the current state"""
