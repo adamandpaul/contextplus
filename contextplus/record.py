@@ -18,7 +18,7 @@ class DomainRecord(base.DomainBase):
         self._record = record
 
     @classmethod
-    def from_id(cls, parent=None, name: str = None, id={}) -> 'DomainRecord':
+    def from_id(cls, parent=None, name: str = None, id: dict = None) -> 'DomainRecord':
         """Pull a record and construct this domain object"""
         raise NotImplementedError()
 
