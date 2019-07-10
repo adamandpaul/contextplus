@@ -11,8 +11,8 @@ from .behaviours import BehaviourWorkflow
 from typing import Optional
 
 
-class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourTraversalPathUtilities,
-                 BehaviourLegacy):
+class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow,
+                 BehaviourTraversalPathUtilities, BehaviourLegacy):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
