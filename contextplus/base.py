@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-"""The domainlib base object is a patten for use in createing business domain logic
+"""The base object is a patten for use in createing business domain logic
 centered around a URL travseral system.
 """
 
