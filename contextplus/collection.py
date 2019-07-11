@@ -17,7 +17,8 @@ class WTFormsCollectionAdd(wtforms.Form):
 
 
 class DomainCollection(base.DomainBase):
-    """A collection of objects usually contentish which can be traversed by name. By default the collection is empty.
+    """A collection of objects, usually contentish, which can be
+    traversed by name. By default the collection is empty.
     """
 
     child_type = None
