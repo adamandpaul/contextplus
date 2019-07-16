@@ -66,7 +66,7 @@ class BehaviourTraversal(object):
         raise exc.DomainTraversalKeyError(key)
 
     def get(self, key: str, default=None):
-        """Convienence method to return a default value when there is a KeyError"""
+        """Convenience method to return a default value when there is a KeyError"""
         try:
             return self.__getitem__(key)
         except KeyError:
@@ -82,10 +82,10 @@ class BehaviourTinterface(object):
         """Return an tinterface for a given name.
 
         tinterfaces are traversable by self[name], this function is called
-        by __getitem__ to obtain the object for a given name. By defeault this
+        by __getitem__ to obtain the object for a given name. By default this
         function looks object factories which are marked on the class with the attribute
         tinterface_factory_for. get_tinterfaces doesn't iterate through the instance
-        properties inorder to prevent bringing into memory evey attribute.
+        properties in order to prevent bringing into memory evey attribute.
 
         tinterface_factory_for can only be a string. For example:
 
@@ -97,11 +97,12 @@ class BehaviourTinterface(object):
 
         Then A()['blahs'] would be an instance of Blahs.
 
-        Note that on successive calls a new object is returned to prevent any circular references occuring.
+        Note that on successive calls a new object is returned to prevent any
+        circular references occurring.
 
         Arguments:
             name: The name of the tinterface. This must be a string.
-            default: The object to be retuned if no tinerface was found.
+            default: The object to be returned if no interface was found.
 
         Returns:
             object: If the the tinterface is found
