@@ -6,7 +6,6 @@ centered around a URL traversal system.
 from .behaviour.acquisition import AcquisitionBehaviour
 from .behaviour.named_resource import NamedResourceBehaviour
 from .behaviour.traversal import TraversalBehaviour
-from typing import Optional
 
 
 class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviour):
@@ -16,7 +15,7 @@ class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviou
     """
 
     @classmethod
-    def get_meta_title(cls) -> str:
+    def get_meta_title(cls):
         """A human readable title of the kind of object"""
         return cls.__name__
 
@@ -24,7 +23,7 @@ class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviou
     parent = None
 
     @property
-    def title(self) -> str:
+    def title(self):
         """A human readable title of this object instance"""
         meta_title = self.get_meta_title()
         name = self.name
@@ -34,7 +33,7 @@ class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviou
             return f"{meta_title}"
 
     @property
-    def description(self) -> str:
+    def description(self):
         """A short description of this object"""
         return ""
 
@@ -51,7 +50,7 @@ class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviou
         """Pyramid traversal interface"""
         return self.parent
 
-    def __init__(self, parent=None, name: Optional[str] = None):
+    def __init__(self, parent=None, name=None):
         """Initialize the DomainBase object
 
         The name attribute can be set after the creation of the domain object
@@ -61,6 +60,6 @@ class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviou
         self.parent = parent
         self.set_name(name)
 
-    def set_name(self, name: str = None):
+    def set_name(self, name=None):
         """Allow setting the name"""
         self.name = name
