@@ -6,7 +6,6 @@ centered around a URL traversal system.
 from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourTraversal
 from .behaviours import BehaviourTraversalPathUtilities
-from .behaviours import BehaviourWorkflow
 from .behaviour.named_resource import NamedResourceBehaviour
 from typing import Optional
 
@@ -14,7 +13,6 @@ from typing import Optional
 class DomainBase(
     NamedResourceBehaviour,
     BehaviourTraversal,
-    BehaviourWorkflow,
     BehaviourTraversalPathUtilities,
 ):
     """The base domain object which all domain objects inherit.
