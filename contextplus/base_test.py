@@ -40,13 +40,6 @@ class TestDomainBaseNoParent(TestCase):
     def test_root(self):
         self.assertEqual(self.domain.root, self.domain)
 
-    def test_iter_tinterfaces(self):
-        self.assertEqual(list(self.domain.iter_tinterfaces()), [])
-
-    def test_get_tinterface(self):
-        self.assertIsNone(self.domain.get_tinterface("foo"))
-        self.assertEqual(self.domain.get_tinterface("foo", 5), 5)
-
     def test_getitem(self):
         with self.assertRaises(KeyError):
             self.domain["foo"]
@@ -67,24 +60,3 @@ class TestDomainBaseWithParent(TestCase):
 
     def test_root(self):
         self.assertEqual(self.child.root, self.parent)
-
-
-class TestDomainBaseSubClass(TestCase):
-    class SubDomain(base.DomainBase):
-        def get_kitchen(self):
-            return "kitchen object"
-
-        get_kitchen.tinterface_factory_for = "kitchen"
-
-    def setUp(self):
-        self.domain = self.SubDomain(None, "my-site")
-
-    def test_get_meta_title(self):
-        self.assertEqual(self.SubDomain.get_meta_title(), "SubDomain")
-
-    def test_iter_tinterfaces(self):
-        self.assertEqual(list(self.domain.iter_tinterfaces()), ["kitchen object"])
-
-    def test_getitem(self):
-        self.assertEqual(self.domain["kitchen"], "kitchen object")
-        self.assertEqual(self.domain.get("kitchen"), "kitchen object")

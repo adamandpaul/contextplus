@@ -7,11 +7,12 @@ from .behaviours import BehaviourTinterface
 from .behaviours import BehaviourTraversal
 from .behaviours import BehaviourTraversalPathUtilities
 from .behaviours import BehaviourWorkflow
+from .behaviour.named_resource import NamedResourceBehaviour
 from typing import Optional
 
 
 class DomainBase(
-    BehaviourTinterface,
+    NamedResourceBehaviour,
     BehaviourTraversal,
     BehaviourWorkflow,
     BehaviourTraversalPathUtilities,
