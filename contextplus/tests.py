@@ -15,13 +15,13 @@ PACKAGE_NAME = 'contextplus'
 
 
 def test_suite_test_cases(package_name=PACKAGE_NAME, pattern='*_test.py'):
-    """Create the test suite used for the test runer
+    """Create the test suite used for the test runner
 
     Discover tests and load them into a test suite.
 
     Args:
-        package_name (str): The package we are interested in loading a test suite for
-        pattern (str): The glob patten used for test discovery
+        package_name (str): The package we are loading a test suite for
+        pattern (str): The glob pattern used for test discovery
 
     Returns:
         TestSuite: The test suite to be used for the test runner
@@ -43,14 +43,18 @@ def test_suite_test_cases(package_name=PACKAGE_NAME, pattern='*_test.py'):
     return suite
 
 
-def test_suite_doctest_folder(package_name=PACKAGE_NAME, path='doctests', pattern='*_test.rst'):
+def test_suite_doctest_folder(package_name=PACKAGE_NAME,
+                              path='doctests',
+                              pattern='*_test.rst'):
     """Create an test suite from a doctest folder
 
-    These are heavier weight tests designed  to make sure all the components a re  working togeths
+    These are heavier weight tests designed to make sure all the components
+    are working together.
 
     Args:
-        package_name (str): The package we are interested in loading a test suite for
-        pattern (str): The glob patten used for test discovery
+        package_name (str): The package we are loading a test suite for
+        path (str): Where to look for doctests
+        pattern (str): The glob pattern used for test discovery
 
     Returns:
         TestSuite: The test suite to be used for the test runner
@@ -69,7 +73,7 @@ def test_suite_doctest_folder(package_name=PACKAGE_NAME, path='doctests', patter
 
 
 def test_suite(package_name=PACKAGE_NAME):
-    """The default test suite. Do unittesting"""
+    """The default test suite. Does unit testing."""
     return test_suite_test_cases(package_name,
                                  pattern='*_test.py')
 

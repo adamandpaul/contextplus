@@ -2,7 +2,7 @@
 """Module of resource behaviours
 """
 
-from . import acquision
+from . import acquisition
 from . import exc
 from .reify import reify
 from collections import OrderedDict
@@ -34,7 +34,7 @@ class BehaviourWorkflow(object):
         start_state = self.workflow_state
         transition = self.workflow_transitions.get(action, None)
 
-        # Check that the transation is valid
+        # Check that the transition is valid
         if transition is None:
             raise exc.WorkflowUnknownActionError(f'Unknown workflow action {action} on {self.title}.')
         if start_state not in transition['from']:
@@ -66,7 +66,7 @@ class BehaviourTraversal(object):
         raise exc.DomainTraversalKeyError(key)
 
     def get(self, key: str, default=None):
-        """Convienence method to return a default value when there is a KeyError"""
+        """Convenience method to return a default value when there is a KeyError"""
         try:
             return self.__getitem__(key)
         except KeyError:
@@ -82,10 +82,10 @@ class BehaviourTinterface(object):
         """Return an tinterface for a given name.
 
         tinterfaces are traversable by self[name], this function is called
-        by __getitem__ to obtain the object for a given name. By defeault this
+        by __getitem__ to obtain the object for a given name. By default this
         function looks object factories which are marked on the class with the attribute
         tinterface_factory_for. get_tinterfaces doesn't iterate through the instance
-        properties inorder to prevent bringing into memory evey attribute.
+        properties in order to prevent bringing into memory evey attribute.
 
         tinterface_factory_for can only be a string. For example:
 
@@ -97,11 +97,12 @@ class BehaviourTinterface(object):
 
         Then A()['blahs'] would be an instance of Blahs.
 
-        Note that on successive calls a new object is returned to prevent any circular references occuring.
+        Note that on successive calls a new object is returned to prevent any
+        circular references occurring.
 
         Arguments:
             name: The name of the tinterface. This must be a string.
-            default: The object to be retuned if no tinerface was found.
+            default: The object to be returned if no interface was found.
 
         Returns:
             object: If the the tinterface is found
@@ -143,9 +144,9 @@ class BehaviourTinterface(object):
 
 
 class BehaviourTraversalPathUtilities(object):
-    """Behaviour which adds traversal path utilites to the domian object"""
+    """Behaviour which adds traversal path utilities to the domain object"""
 
-    # Navigating up the tree and adding acquision
+    # Navigating up the tree and adding acquisition
 
     def iter_ancestors(self):
         current = self.parent
@@ -177,8 +178,8 @@ class BehaviourTraversalPathUtilities(object):
 
     @reify
     def acquire(self):
-        """Return the acquision proxy from self"""
-        return acquision.AcquisitionProxy(self)
+        """Return the acquisition proxy from self"""
+        return acquisition.AcquisitionProxy(self)
 
 
 class AdaptComponentLoggerToLogger(object):
@@ -212,7 +213,7 @@ class BehaviourLegacy(object):
 
     @classmethod
     def get_info_key_descriptions(cls):
-        """Return human redable descriptions for info keys"""
+        """Return human readable descriptions for info keys"""
         descriptions = OrderedDict([
             ('object_title', 'Title'),
             ('object_name', 'URL Name'),
@@ -229,7 +230,7 @@ class BehaviourLegacy(object):
 
     @reify
     def info_admin_profile(self):
-        """Return information userful for the admin profile"""
+        """Return information useful for the admin profile"""
         info = OrderedDict([
             ('object_title', self.title),
             ('object_name', self.name),
@@ -247,5 +248,5 @@ class BehaviourLegacy(object):
 
     @reify
     def api_get(self):
-        """Items returnd from an api"""
+        """Items returned from an api"""
         return {}
