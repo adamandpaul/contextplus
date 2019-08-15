@@ -5,10 +5,8 @@
 from . import acquisition
 from . import exc
 from .reify import reify
-from collections import OrderedDict
 from typing import Iterable
 
-import logging
 import zlib
 
 

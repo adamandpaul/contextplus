@@ -2,7 +2,6 @@
 
 from . import acquisition
 from . import base
-from collections import OrderedDict
 from unittest import TestCase
 
 
