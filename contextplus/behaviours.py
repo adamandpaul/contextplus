@@ -4,7 +4,6 @@
 
 from . import acquisition
 from . import exc
-from .reify import reify
 from typing import Iterable
 
 import zlib
@@ -158,7 +157,7 @@ class BehaviourTraversalPathUtilities(object):
             yield current
             current = current.parent
 
-    @reify
+    @property
     def path_names(self):
         """Return a tuple of path names"""
         items = []
@@ -167,12 +166,12 @@ class BehaviourTraversalPathUtilities(object):
         items.append(self.name)
         return tuple(items)
 
-    @reify
+    @property
     def path_hash(self):
         data = repr(self.path_names).encode("utf8")
         return hex(zlib.adler32(data))[2:]
 
-    @reify
+    @property
     def root(self):
         """Return the root object"""
         highest = self
@@ -180,7 +179,7 @@ class BehaviourTraversalPathUtilities(object):
             highest = ancestor
         return highest
 
-    @reify
+    @property
     def acquire(self):
         """Return the acquisition proxy from self"""
         return acquisition.AcquisitionProxy(self)

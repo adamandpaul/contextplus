@@ -3,7 +3,6 @@
 
 from . import base
 from . import exc
-from .reify import reify
 
 
 class DomainRecord(base.DomainBase):
@@ -22,7 +21,7 @@ class DomainRecord(base.DomainBase):
         """Pull a record and construct this domain object"""
         raise NotImplementedError()
 
-    @reify
+    @property
     def id(self) -> dict:
         """Return the records ID"""
         record = self._record

@@ -52,7 +52,7 @@ class TestDomainSQLAlchemyRecordCollection(TestCase):
 
     def test_query(self):
         collection = sqlalchemy.DomainSQLAlchemyRecordCollection()
-        collection.acquire = MagicMock()
+        collection.parent = MagicMock()
         collection.child_type = MagicMock()
         query = collection.query([{"filter_by": {"record_id": "abc"}}])
 

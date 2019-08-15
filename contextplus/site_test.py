@@ -2,22 +2,16 @@
 
 from . import site
 from unittest import TestCase
-from unittest.mock import MagicMock
 
 
 class TestSite(TestCase):
     def test_init(self):
-        s = site.Site()
-        self.assertEqual(s.get_request(), None)
-
-        request = MagicMock()
-        s = site.Site(request=request)
-        self.assertIs(s.get_request(), request)
-
-    def test_properties(self):
-        r = MagicMock()
-        s = site.Site(request=r)
-        self.assertEqual(s.no_cache, True)
-        self.assertEqual(s.settings, r.registry.settings)
-        self.assertEqual(s.db_session, r.db_session)
-        self.assertEqual(s.redis, r.redis)
+        db_session = object()
+        redis = object()
+        s = site.Site(
+            None, "ACMY Foo", settings={"a": 1}, db_session=db_session, redis=redis
+        )
+        self.assertEqual(s.name, "ACMY Foo")
+        self.assertEqual(s.settings, {"a": 1})
+        self.assertEqual(s.db_session, db_session)
+        self.assertEqual(s.redis, redis)

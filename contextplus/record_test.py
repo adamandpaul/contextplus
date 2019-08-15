@@ -18,7 +18,7 @@ class TestDomainRecord(TestCase):
             record_type = MagicMock()
 
         self.record = MyRecord(record=db_record)
-        self.record.acquire = MagicMock()
+        self.record.parent = MagicMock()
 
     def test_attributes(self):
         self.assertEqual(self.record._record, self.db_record)
