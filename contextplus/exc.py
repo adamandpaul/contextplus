@@ -4,6 +4,7 @@
 try:
     from pyramid.httpexceptions import HTTPForbidden
 except ImportError:
+
     class HTTPForbidden(Exception):
         """Placeholder class for when pyramid is not available"""
 

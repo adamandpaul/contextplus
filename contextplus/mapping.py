@@ -7,7 +7,7 @@ class DomainMapping(base.DomainBase):
     """A single domain backed by a mapping object"""
 
     _mapping = None
-    workflow_key = 'workflow_state'
+    workflow_key = "workflow_state"
 
     def __init__(self, parent=None, name: str = None, mapping=None):
         super().__init__(parent, name)

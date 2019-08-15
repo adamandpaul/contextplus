@@ -18,7 +18,7 @@ class DomainRecord(base.DomainBase):
         self._record = record
 
     @classmethod
-    def from_id(cls, parent=None, name: str = None, id: dict = None) -> 'DomainRecord':
+    def from_id(cls, parent=None, name: str = None, id: dict = None) -> "DomainRecord":
         """Pull a record and construct this domain object"""
         raise NotImplementedError()
 
@@ -47,17 +47,21 @@ class DomainRecord(base.DomainBase):
         record = self._record
         record_type = self.record_type
         for key, value in kwargs.items():
-            if key.startswith('_'):
-                raise exc.DomainRecordUpdateError(f'Can not edit protected field: {key}')
+            if key.startswith("_"):
+                raise exc.DomainRecordUpdateError(
+                    f"Can not edit protected field: {key}"
+                )
             if key in id_fields:
-                raise exc.DomainRecordUpdateError(f'Can not edit primary key field: {key}')
+                raise exc.DomainRecordUpdateError(
+                    f"Can not edit primary key field: {key}"
+                )
             if not hasattr(record_type, key):
-                raise exc.DomainRecordUpdateError(f'Field not found: {key}')
+                raise exc.DomainRecordUpdateError(f"Field not found: {key}")
 
             old_value = getattr(record, key)
             if old_value != value:
                 setattr(record, key, value)
-                self.logger.info(f'Set {key}: {value}')
+                self.logger.info(f"Set {key}: {value}")
 
     api_patch_field_whitelist = ()
 
@@ -68,10 +72,12 @@ class DomainRecord(base.DomainBase):
             if key not in self.api_patch_field_whitelist:
                 patch_keys_not_allowed.append(key)
         if len(patch_keys_not_allowed) > 0:
-            raise exc.DomainForbiddenError(f'Forbidden to patch keys {patch_keys_not_allowed}')
+            raise exc.DomainForbiddenError(
+                f"Forbidden to patch keys {patch_keys_not_allowed}"
+            )
         self.edit(**kwargs)
 
-    workflow_field = 'workflow_state'
+    workflow_field = "workflow_state"
 
     def workflow_set_state(self, state):
         """Set a workflow state on the record identified by workflow_field"""
@@ -80,4 +86,7 @@ class DomainRecord(base.DomainBase):
     @property
     def workflow_state(self):
         """Return the current workflow state"""
-        return getattr(self._record, self.workflow_field, None) or self.workflow_default_state
+        return (
+            getattr(self._record, self.workflow_field, None)
+            or self.workflow_default_state
+        )

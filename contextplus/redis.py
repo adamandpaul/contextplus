@@ -32,9 +32,9 @@ class DomainRedisNamespace(base.DomainBase):
     def redis_namespace(self) -> str:
         """The namespace is used to prefix keys and and prevent conflicts"""
         meta_title = self.get_meta_title()
-        return f'domain:{meta_title}:{self.name}'
+        return f"domain:{meta_title}:{self.name}"
 
-    redis_keys = ['obj']
+    redis_keys = ["obj"]
 
     redis_default_ex = 60 * 60 * 24  # 24 hours
 
@@ -43,9 +43,9 @@ class DomainRedisNamespace(base.DomainBase):
         ns = self.redis_namespace
         ex = self.redis_default_ex
         pipe = self.acquire.redis.pipeline()
-        pipe.hset(f'{ns}:obj', '_touch', 1)
+        pipe.hset(f"{ns}:obj", "_touch", 1)
         for key in self.redis_keys:
-            pipe.expire(f'{ns}:{key}', ex)
+            pipe.expire(f"{ns}:{key}", ex)
         pipe.execute()
 
     def obj_dump(self, obj) -> bytes:
@@ -59,22 +59,22 @@ class DomainRedisNamespace(base.DomainBase):
     def obj_set(self, key: str, value):
         """Set a key in the obj to the value"""
         buf = self.obj_dump(value)
-        self.acquire.redis.hset(f'{self.redis_namespace}:obj', key, buf)
+        self.acquire.redis.hset(f"{self.redis_namespace}:obj", key, buf)
 
     def obj_get(self, key: str):
         """Retrieve an object stored in the obj hash at the key name"""
-        buf = self.acquire.redis.hget(f'{self.redis_namespace}:obj', key)
+        buf = self.acquire.redis.hget(f"{self.redis_namespace}:obj", key)
         if isinstance(buf, bytes):
             return self.obj_load(buf)
         elif buf is None:
             return None
         else:
-            raise Exception('Unexpected response type from redis')
+            raise Exception("Unexpected response type from redis")
 
     def obj_mget(self, *keys) -> Iterable:
         """Retrieve an object stored in the obj hash at the key name"""
         pipe = self.acquire.redis.pipeline()
-        hash_key = f'{self.redis_namespace}:obj'
+        hash_key = f"{self.redis_namespace}:obj"
         for key in keys:
             pipe.hget(hash_key, key)
         for buf in pipe.execute():
@@ -88,7 +88,7 @@ class DomainRedisNamespace(base.DomainBase):
         values = self.obj_mget(*keys)
         return dict(zip(keys, values))
 
-    workflow_obj_key = 'workflow_state'
+    workflow_obj_key = "workflow_state"
 
     @reify
     def workflow_state(self) -> str:

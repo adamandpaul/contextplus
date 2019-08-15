@@ -14,7 +14,7 @@ class Site(base.DomainBase):
     your site's name on ``Site`` subclasses.
     """
 
-    logger_name = 'contextplus'
+    logger_name = "contextplus"
 
     def __init__(self, parent=None, name: str = None, request=None, settings=None):
         super().__init__(parent, name)
@@ -22,7 +22,7 @@ class Site(base.DomainBase):
             self.settings = settings
             self.get_request = lambda: None
         else:
-            assert settings is None, 'settings and request can not be both set'
+            assert settings is None, "settings and request can not be both set"
             self.get_request = weakref.ref(request)
 
     @reify

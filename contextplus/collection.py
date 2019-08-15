@@ -29,7 +29,7 @@ class DomainCollection(base.DomainBase):
     def get_meta_title(cls) -> str:
         """A meta title of this kind of object"""
         child_type_meta_title = cls.child_type.get_meta_title()
-        return f'Collection of objects of type {child_type_meta_title}'
+        return f"Collection of objects of type {child_type_meta_title}"
 
     def iter_children(self) -> Iterable:
         """Iterate through the children of this collection"""
@@ -39,7 +39,9 @@ class DomainCollection(base.DomainBase):
         """Translate a wtform to a criteria"""
         return []
 
-    def filter(self, criteria: list = None, limit: int = None, offset: int = None) -> Iterable:
+    def filter(
+        self, criteria: list = None, limit: int = None, offset: int = None
+    ) -> Iterable:
         """Return a filtered set of results.
 
         This implementation is very inefficient for big sets.
@@ -82,10 +84,7 @@ class DomainCollection(base.DomainBase):
         else:
             items = [c for c in children]
 
-        return {
-            'total': total,
-            'items': items,
-        }
+        return {"total": total, "items": items}
 
     def get_child(self, name: str, default: object = None):
         """Return a child object of this collection"""
@@ -121,7 +120,9 @@ class DomainCollection(base.DomainBase):
             if key not in self.api_post_field_whitelist:
                 post_keys_not_allowed.append(key)
         if len(post_keys_not_allowed) > 0:
-            raise exc.DomainForbiddenError(f'Forbidden to post data. Keys not allowed: {post_keys_not_allowed}')
+            raise exc.DomainForbiddenError(
+                f"Forbidden to post data. Keys not allowed: {post_keys_not_allowed}"
+            )
         return self.add(**kwargs)
 
     def write_csv(self, stream):

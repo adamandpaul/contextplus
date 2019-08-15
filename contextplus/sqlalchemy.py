@@ -11,7 +11,9 @@ class DomainSQLAlchemyRecord(record.DomainRecord):
     """A Domain backed by an SQLAlchemy Record"""
 
     @classmethod
-    def from_id(cls, parent=None, name: str = None, id: dict = None) -> Optional['DomainSQLAlchemyRecord']:
+    def from_id(
+        cls, parent=None, name: str = None, id: dict = None
+    ) -> Optional["DomainSQLAlchemyRecord"]:
         """
         Args:
             parent: The parent object
@@ -26,15 +28,15 @@ class DomainSQLAlchemyRecord(record.DomainRecord):
         """
         assert id is not None
         if set(id) != set(cls.id_fields):
-            raise exc.DomainRecordIdTypeError(f'Can not retrieve record from invalid id: {id}')
+            raise exc.DomainRecordIdTypeError(
+                f"Can not retrieve record from invalid id: {id}"
+            )
         db_session = parent.acquire.db_session
         result = db_session.query(cls.record_type).filter_by(**id).one_or_none()
         if result is None:
             return None
         else:
-            return cls(parent=parent,
-                       name=name,
-                       record=result)
+            return cls(parent=parent, name=name, record=result)
 
 
 class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
@@ -52,8 +54,7 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
 
     def child_from_record(self, child_record):
         """Return the child item from a record object"""
-        child = self.child_type(parent=self,
-                                record=child_record)
+        child = self.child_type(parent=self, record=child_record)
         child_name = self.name_from_child(child)
         child.set_name(child_name)
         return child
@@ -72,14 +73,22 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
         # apply any filters
         for criteria_part in criteria:
             for key, value in criteria_part.items():
-                if key == 'filter_by':
+                if key == "filter_by":
                     query = query.filter_by(**value)
                 else:
-                    raise exc.DomainCollectionUnsupportedCriteria(f'Unsupported criteria {key}')
+                    raise exc.DomainCollectionUnsupportedCriteria(
+                        f"Unsupported criteria {key}"
+                    )
 
         return query
 
-    def filter(self, criteria: list = [], order_by: list = None, limit: int = None, offset: int = None) -> dict:
+    def filter(
+        self,
+        criteria: list = [],
+        order_by: list = None,
+        limit: int = None,
+        offset: int = None,
+    ) -> dict:
         """Return a filtered set of results"""
 
         query = self.query(criteria)
@@ -92,9 +101,9 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
         if order_by is None:
             order_by = self.default_order_by_fields
         for expression in order_by:
-            field_name = expression.split(' ')[0]
+            field_name = expression.split(" ")[0]
             field = getattr(record_type, field_name)
-            if expression.endswith(' desc'):
+            if expression.endswith(" desc"):
                 field = field.desc()
             query = query.order_by(field)
 
@@ -110,10 +119,7 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
             child = self.child_from_record(rec)
             items.append(child)
 
-        return {
-            'total': total,
-            'items': items,
-        }
+        return {"total": total, "items": items}
 
     def iter_children(self) -> Iterable:
         """Iterate through all the children"""
@@ -122,9 +128,9 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
         query = self.query()
         record_type = self.child_type.record_type
         for expression in self.default_order_by_fields:
-            field_name = expression.split(' ')[0]
+            field_name = expression.split(" ")[0]
             field = getattr(record_type, field_name)
-            if expression.endswith(' desc'):
+            if expression.endswith(" desc"):
                 field = field.desc()
             query = query.order_by(field)
 
@@ -137,7 +143,5 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
             id = self.id_from_name(name)
         except TypeError:
             return None
-        child = self.child_type.from_id(parent=self,
-                                        name=name,
-                                        id=id)
+        child = self.child_type.from_id(parent=self, name=name, id=id)
         return child or default

@@ -16,7 +16,7 @@ class BehaviourWorkflow(object):
     """Add workflow actions and transitions"""
 
     # Workflow
-    workflow_default_state = 'unknown'
+    workflow_default_state = "unknown"
     workflow_transitions = {}
     workflow_previous_state = None
 
@@ -27,7 +27,9 @@ class BehaviourWorkflow(object):
     def workflow_set_state(self, state):
         """Set the current workflow state"""
         # self.workflow_previous_state = self.workflow_state
-        raise exc.WorkflowTransitionError('Object does not support workflow transitions')
+        raise exc.WorkflowTransitionError(
+            "Object does not support workflow transitions"
+        )
 
     def workflow_action(self, action):
         """Do a workflow action on this object"""
@@ -36,20 +38,24 @@ class BehaviourWorkflow(object):
 
         # Check that the transition is valid
         if transition is None:
-            raise exc.WorkflowUnknownActionError(f'Unknown workflow action {action} on {self.title}.')
-        if start_state not in transition['from']:
-            raise exc.WorkflowIllegalTransitionError(f'Can not {action} on an instance of {self.__class__.__name__} in the state {start_state}')
-        destination_state = transition['to']
+            raise exc.WorkflowUnknownActionError(
+                f"Unknown workflow action {action} on {self.title}."
+            )
+        if start_state not in transition["from"]:
+            raise exc.WorkflowIllegalTransitionError(
+                f"Can not {action} on an instance of {self.__class__.__name__} in the state {start_state}"
+            )
+        destination_state = transition["to"]
 
         # Log transition
-        self.logger.info(f'workflow: {action}')
+        self.logger.info(f"workflow: {action}")
 
         # Perform transition
-        before = getattr(self, f'workflow_before_{action}', None)
+        before = getattr(self, f"workflow_before_{action}", None)
         if before is not None:
             before()
         self.workflow_set_state(destination_state)
-        after = getattr(self, f'workflow_after_{action}', None)
+        after = getattr(self, f"workflow_after_{action}", None)
         if after is not None:
             after()
 
@@ -112,7 +118,7 @@ class BehaviourTinterface(object):
         for cls_name in dir(cls):
             cls_item = getattr(cls, cls_name, None)
             if cls_item is not None:
-                if getattr(cls_item, 'tinterface_factory_for', None) == name:
+                if getattr(cls_item, "tinterface_factory_for", None) == name:
                     factory = getattr(self, cls_name)
                     return factory()
         return default
@@ -123,7 +129,7 @@ class BehaviourTinterface(object):
         for cls_name in dir(cls):
             cls_item = getattr(cls, cls_name, None)
             if cls_item is not None:
-                if getattr(cls_item, 'tinterface_factory_for', None) is not None:
+                if getattr(cls_item, "tinterface_factory_for", None) is not None:
                     factory = getattr(self, cls_name)
                     tinterface = factory()
                     if tinterface is not None:
@@ -135,7 +141,7 @@ class BehaviourTinterface(object):
         Raises:
             DomainTraversalKeyError: If there is not item to return
         """
-        assert isinstance(key, str), 'Only string keys are supported on __getitem__'
+        assert isinstance(key, str), "Only string keys are supported on __getitem__"
         item = self.get_tinterface(key)
         if item is not None:
             return item
@@ -165,7 +171,7 @@ class BehaviourTraversalPathUtilities(object):
 
     @reify
     def path_hash(self):
-        data = repr(self.path_names).encode('utf8')
+        data = repr(self.path_names).encode("utf8")
         return hex(zlib.adler32(data))[2:]
 
     @reify
@@ -214,13 +220,15 @@ class BehaviourLegacy(object):
     @classmethod
     def get_info_key_descriptions(cls):
         """Return human readable descriptions for info keys"""
-        descriptions = OrderedDict([
-            ('object_title', 'Title'),
-            ('object_name', 'URL Name'),
-            ('object_meta_title', 'Type'),
-            ('object_description', 'Description'),
-            ('object_workflow_state', 'Workflow State'),
-        ])
+        descriptions = OrderedDict(
+            [
+                ("object_title", "Title"),
+                ("object_name", "URL Name"),
+                ("object_meta_title", "Type"),
+                ("object_description", "Description"),
+                ("object_workflow_state", "Workflow State"),
+            ]
+        )
         return descriptions
 
     @reify
@@ -231,13 +239,15 @@ class BehaviourLegacy(object):
     @reify
     def info_admin_profile(self):
         """Return information useful for the admin profile"""
-        info = OrderedDict([
-            ('object_title', self.title),
-            ('object_name', self.name),
-            ('object_meta_title', self.get_meta_title()),
-            ('object_description', self.description),
-            ('object_workflow_state', self.workflow_state),
-        ])
+        info = OrderedDict(
+            [
+                ("object_title", self.title),
+                ("object_name", self.name),
+                ("object_meta_title", self.get_meta_title()),
+                ("object_description", self.description),
+                ("object_workflow_state", self.workflow_state),
+            ]
+        )
         info.update(self.info)
         return info
 

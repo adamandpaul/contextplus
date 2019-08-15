@@ -11,8 +11,13 @@ from .behaviours import BehaviourWorkflow
 from typing import Optional
 
 
-class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow,
-                 BehaviourTraversalPathUtilities, BehaviourLegacy):
+class DomainBase(
+    BehaviourTinterface,
+    BehaviourTraversal,
+    BehaviourWorkflow,
+    BehaviourTraversalPathUtilities,
+    BehaviourLegacy,
+):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
@@ -32,21 +37,21 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow,
         meta_title = self.get_meta_title()
         name = self.name
         if name is not None:
-            return f'{meta_title}: {self.name}'
+            return f"{meta_title}: {self.name}"
         else:
-            return f'{meta_title}'
+            return f"{meta_title}"
 
     @property
     def description(self) -> str:
         """A short description of this object"""
-        return ''
+        return ""
 
     @property
     def __name__(self):
         """Return the name unless it is None.
         In which case throw an AttributeError"""
         if self.name is None:
-            raise AttributeError('Name not yet set')
+            raise AttributeError("Name not yet set")
         return self.name
 
     @property

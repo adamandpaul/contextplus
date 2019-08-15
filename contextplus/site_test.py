@@ -6,7 +6,6 @@ from unittest.mock import MagicMock
 
 
 class TestSite(TestCase):
-
     def test_init(self):
         s = site.Site()
         self.assertEqual(s.get_request(), None)

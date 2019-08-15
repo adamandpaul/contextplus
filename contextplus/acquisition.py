@@ -34,8 +34,7 @@ class AcquisitionProxy(object):
         self._subject = subject
 
     def __getattr__(self, name: str):
-        nodes = itertools.chain([self._subject],
-                                self._subject.iter_ancestors())
+        nodes = itertools.chain([self._subject], self._subject.iter_ancestors())
         for current in nodes:
             value = getattr(current, name, _MISSING_ATTRIBUTE)
             if value is not _MISSING_ATTRIBUTE:
