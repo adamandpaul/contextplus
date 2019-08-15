@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from . import acquision
+from . import acquisition
 from . import base
 from collections import OrderedDict
 from unittest import TestCase
@@ -42,7 +42,7 @@ class TestDomainBaseNoParent(TestCase):
 
     def test_acquire(self):
         acquire = self.domain.acquire
-        self.assertIsInstance(acquire, acquision.AcquisitionProxy)
+        self.assertIsInstance(acquire, acquisition.AcquisitionProxy)
         self.assertEqual(acquire.title, 'DomainBase: my-site')
 
     def test_iter_ancestors(self):

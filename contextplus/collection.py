@@ -17,7 +17,8 @@ class WTFormsCollectionAdd(wtforms.Form):
 
 
 class DomainCollection(base.DomainBase):
-    """A collection of objects usually contentish which can be traversed by name. By default the collection is empty.
+    """A collection of objects, usually contentish, which can be
+    traversed by name. By default the collection is empty.
     """
 
     child_type = None
@@ -38,18 +39,22 @@ class DomainCollection(base.DomainBase):
         """Translate a wtform to a criteria"""
         return []
 
-    def filter(self, criteria: list = [], limit: int = None, offset: int = None) -> Iterable:
+    def filter(self, criteria: list = None, limit: int = None, offset: int = None) -> Iterable:
         """Return a filtered set of results.
 
         This implementation is very inefficient for big sets.
 
         Args:
-            page_size: The maximum items to return
-            page: Used to calculate the offset together with the page size
+            criteria: This is up to subclasses to implement
+            limit: The maximum items to return
+            offset: Used to calculate the offset together with the page size
 
         Raises:
-            DomainCollectionUnsupportedCriteria: If criteria is given. This is upto subclasses to implement
+            DomainCollectionUnsupportedCriteria: If criteria is given.
+            This is up to subclasses to implement
         """
+        if criteria is None:
+            criteria = []
         if len(criteria) > 0:
             raise exc.DomainCollectionUnsupportedCriteria()
 

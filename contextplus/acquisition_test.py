@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
 
-from . import acquision
+from . import acquisition
 from unittest import TestCase
 
 
-class TestAcquision(TestCase):
+class TestAcquisition(TestCase):
 
     def test_acquire_parent_attribute(self):
 
@@ -23,7 +23,7 @@ class TestAcquision(TestCase):
             def iter_ancestors(self):
                 return [Parent(), Root()]
 
-        acquire = acquision.AcquisitionProxy(Child())
+        acquire = acquisition.AcquisitionProxy(Child())
         self.assertEqual(acquire.shape, 'circle')
         self.assertEqual(acquire.colour, 'blue')
         self.assertEqual(acquire.size, 'big')

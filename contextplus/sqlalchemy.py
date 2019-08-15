@@ -15,18 +15,18 @@ class DomainSQLAlchemyRecord(record.DomainRecord):
         """
         Args:
             parent: The parent object
-            name: The travsersal name to get to this object
+            name: The traversal name to get to this object
             id: The id of the object as a dictionary
 
         Returns:
             the domain object for a given record id or None if it doesn't exist
 
         Raises:
-            DomainRecordIdTypeError: If the id fields doesn't match cls.id_fields
+            DomainRecordIdTypeError: If the id fields don't match cls.id_fields
         """
         assert id is not None
         if set(id) != set(cls.id_fields):
-            raise exc.DomainRecordIdTypeError(f'Can not retreive record from invalid id: {id}')
+            raise exc.DomainRecordIdTypeError(f'Can not retrieve record from invalid id: {id}')
         db_session = parent.acquire.db_session
         result = db_session.query(cls.record_type).filter_by(**id).one_or_none()
         if result is None:

@@ -1,14 +1,15 @@
 # -*- coding:utf-8 -*-
-"""Acquision
+"""Acquisition
 
-Acquision is an abstraction metholodgy used in traversal sceinarios. By which
-decendents can enquire up the acenstor chain for an object. For example if an object
-wanted a datbase session it can acquire it from a parent through self.acquision.dbsession
-which could be self.parent.dbsession or self.parent.parent.dbsession depending where
-it is first found.
+Acquisition is an abstraction methodology used in traversal scenarios, by
+which descendents can enquire up the ancestor chain for an object. For example
+if an object wanted a database session it can acquire it from a parent through
+``self.acquisition.db_session`` which could be ``self.parent.db_session`` or
+``self.parent.parent.db_session`` depending where it is first found.
 
-Item acquisition e.g. self.acquision['foo'] is specificly not implemented since that opens the
-possiblity of injection attacks from content sources.
+Item acquisition e.g. ``self.acquisition['foo']`` is specifically not
+implemented since that opens the possibility of injection attacks from
+content sources.
 """
 
 from . import exc
@@ -20,12 +21,12 @@ _MISSING_ATTRIBUTE = object()  # an object representing no returned attribute
 
 
 class AcquisitionProxy(object):
-    """A proxy object which searches for attributes or items from ancestors of the current
-    domain object
+    """A proxy object which searches for attributes or items from ancestors
+    of the current domain object
     """
 
     def __init__(self, subject):
-        """Initalize acquisiion proxy
+        """Initialize acquisition proxy
 
         Args:
             subject: The current object to start the search

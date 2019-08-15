@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
-"""The domainlib base object is a patten for use in createing business domain logic
-centered around a URL travseral system.
+"""The base object is a pattern for use in creating business domain logic
+centered around a URL traversal system.
 """
 
 from .behaviours import BehaviourLegacy
@@ -11,8 +11,8 @@ from .behaviours import BehaviourWorkflow
 from typing import Optional
 
 
-class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, BehaviourTraversalPathUtilities,
-                 BehaviourLegacy):
+class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow,
+                 BehaviourTraversalPathUtilities, BehaviourLegacy):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
@@ -38,12 +38,13 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, Beh
 
     @property
     def description(self) -> str:
-        """A short description of the this object"""
+        """A short description of this object"""
         return ''
 
     @property
     def __name__(self):
-        """Return the name unless it is None. In which case throw an AttributeError"""
+        """Return the name unless it is None.
+        In which case throw an AttributeError"""
         if self.name is None:
             raise AttributeError('Name not yet set')
         return self.name
@@ -54,11 +55,11 @@ class DomainBase(BehaviourTinterface, BehaviourTraversal, BehaviourWorkflow, Beh
         return self.parent
 
     def __init__(self, parent=None, name: Optional[str] = None):
-        """Initalize the DomainBase object
+        """Initialize the DomainBase object
 
         The name attribute can be set after the creation of the domain object
-        by calling self.set_name. The reason for this is in the case were the name
-        value is a dependency of the domain interface.
+        by calling ``self.set_name``. The reason for this is in the case were
+        the name value is a dependency of the domain interface.
         """
         self.parent = parent
         self.set_name(name)

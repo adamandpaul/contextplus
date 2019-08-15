@@ -9,9 +9,12 @@ import weakref
 
 class Site(base.DomainBase):
     """A site object which in most cases will be the root object
+
+    The ``logger_name`` should be overridden to something meaningful such as
+    your site's name on ``Site`` subclasses.
     """
 
-    logger_name = 'ap.ecommerce.app'
+    logger_name = 'contextplus'
 
     def __init__(self, parent=None, name: str = None, request=None, settings=None):
         super().__init__(parent, name)
@@ -39,5 +42,6 @@ class Site(base.DomainBase):
         return self.get_request().redis
 
     def get_logger(self):
-        """Fall back logger for the entire site when get_logger is called from self.acquire"""
+        """Fall back logger for the entire site when ``get_logger`` is called
+        from ``self.acquire``"""
         return logging.getLogger(self.logger_name)
