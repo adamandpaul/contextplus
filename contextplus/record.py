@@ -61,7 +61,6 @@ class DomainRecord(base.DomainBase):
             old_value = getattr(record, key)
             if old_value != value:
                 setattr(record, key, value)
-                self.logger.info(f"Set {key}: {value}")
 
     api_patch_field_whitelist = ()
 

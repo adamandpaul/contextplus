@@ -28,15 +28,7 @@ class TestDomainBaseNoParent(TestCase):
         self.assertEqual(d.__name__, "my-site")
         self.assertEqual(d.__parent__, None)
         self.assertEqual(d.title, "DomainBase: my-site")
-        self.assertEqual(d.title_short, "DomainBase: my-site")
         self.assertEqual(d.description, "")
-        self.assertEqual(d.info, OrderedDict())
-        self.assertEqual(d.info_admin_profile["object_title"], "DomainBase: my-site")
-        self.assertEqual(d.info_admin_profile["object_name"], "my-site")
-        self.assertEqual(d.info_admin_profile["object_meta_title"], "DomainBase")
-        self.assertEqual(d.info_admin_profile["object_description"], "")
-        self.assertEqual(d.info_admin_profile["object_workflow_state"], "unknown")
-        self.assertEqual(d.api_get, {})
 
     def test_acquire(self):
         acquire = self.domain.acquire
