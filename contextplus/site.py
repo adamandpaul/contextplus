@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 from . import base
-from .reify import reify
 
 
 class Site(base.DomainBase):
@@ -20,7 +19,3 @@ class Site(base.DomainBase):
         self.settings = settings or {}
         self.db_session = db_session
         self.redis = redis
-
-    @reify
-    def no_cache(self):
-        return True
