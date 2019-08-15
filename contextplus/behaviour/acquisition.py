@@ -12,7 +12,7 @@ implemented since that opens the possibility of injection attacks from
 content sources.
 """
 
-from . import exc
+from .. import exc
 
 import itertools
 
@@ -43,3 +43,11 @@ class AcquisitionProxy(object):
 
         # Nothing found
         raise exc.DomainAcquisitionAttributeError(name)
+
+
+class AcquisitionBehaviour(object):
+
+    @property
+    def acquire(self):
+        """Return the acquisition proxy from self"""
+        return AcquisitionProxy(self)

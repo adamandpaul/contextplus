@@ -1,17 +1,13 @@
 # -*- coding:utf-8 -*-
-"""Module of resource behaviours
-"""
-
-from . import acquisition
-from . import exc
 
 import zlib
 
 
-class BehaviourTraversal(object):
-    """Behaviour to allow items to be traversed"""
+class TraversalBehaviour(object):
 
-    def __getitem__(self, key: str):
+    parent = None
+
+    def __getitem__(self, key):
         """Return an items contained in this domain object.
 
         Raises:
@@ -25,12 +21,6 @@ class BehaviourTraversal(object):
             return self.__getitem__(key)
         except KeyError:
             return default
-
-
-class BehaviourTraversalPathUtilities(object):
-    """Behaviour which adds traversal path utilities to the domain object"""
-
-    # Navigating up the tree and adding acquisition
 
     def iter_ancestors(self):
         current = self.parent
@@ -59,18 +49,3 @@ class BehaviourTraversalPathUtilities(object):
         for ancestor in self.iter_ancestors():
             highest = ancestor
         return highest
-
-    @property
-    def acquire(self):
-        """Return the acquisition proxy from self"""
-        return acquisition.AcquisitionProxy(self)
-
-
-class AdaptComponentLoggerToLogger(object):
-    """Adapt a component logger to a logging.Logger interface"""
-
-    def __init__(self, context):
-        self._context = context
-
-    def info(self, message):
-        self._context.log_info(message)

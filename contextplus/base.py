@@ -3,15 +3,17 @@
 centered around a URL traversal system.
 """
 
+from . import acquisition
+from . import exc
+from .behaviour.acquisition import AcquisitionBehaviour
 from .behaviour.named_resource import NamedResourceBehaviour
-from .behaviours import BehaviourTraversal
-from .behaviours import BehaviourTraversalPathUtilities
+from .behaviour.traversal import TraversalBehaviour
 from typing import Optional
 
+import zlib
 
-class DomainBase(
-    NamedResourceBehaviour, BehaviourTraversal, BehaviourTraversalPathUtilities
-):
+
+class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviour):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.
