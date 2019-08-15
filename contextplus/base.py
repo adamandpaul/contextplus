@@ -3,14 +3,10 @@
 centered around a URL traversal system.
 """
 
-from . import acquisition
-from . import exc
 from .behaviour.acquisition import AcquisitionBehaviour
 from .behaviour.named_resource import NamedResourceBehaviour
 from .behaviour.traversal import TraversalBehaviour
 from typing import Optional
-
-import zlib
 
 
 class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviour):

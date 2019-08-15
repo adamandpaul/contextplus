@@ -46,7 +46,6 @@ class AcquisitionProxy(object):
 
 
 class AcquisitionBehaviour(object):
-
     @property
     def acquire(self):
         """Return the acquisition proxy from self"""
