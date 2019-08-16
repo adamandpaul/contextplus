@@ -35,16 +35,3 @@ class TestDomainRecord(TestCase):
         for field_name in data:
             with self.assertRaises(exc.DomainRecordUpdateError):
                 self.record.edit(**{field_name: "foo"})
-
-    def test_api_patch(self):
-        r = self.record
-        r.edit = Mock()
-        r.api_patch_field_whitelist = ("foo",)
-        r.api_patch(foo="bar")
-        r.edit.assert_called_with(foo="bar")
-
-    def test_api_patch_forbidden_field(self):
-        r = self.record
-        r.api_patch_field_whitelist = ("foo",)
-        with self.assertRaises(exc.DomainForbiddenError):
-            r.api_patch(size="big")

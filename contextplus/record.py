@@ -30,16 +30,6 @@ class DomainRecord(base.DomainBase):
             value[field_name] = getattr(record, field_name)
         return value
 
-    wtforms_record_edit_blank = None
-
-    def wtforms_record_edit(self, data=None):
-        """Return an instance of the edit from, if data is supplied then
-        init the form from data"""
-        if data is not None:
-            return self.wtforms_record_edit_blank(data)
-        else:
-            return self.wtforms_record_edit_blank(obj=self._record)
-
     def edit(self, **kwargs):
         """Edit the values in the record"""
         id_fields = self.id_fields
@@ -60,20 +50,6 @@ class DomainRecord(base.DomainBase):
             old_value = getattr(record, key)
             if old_value != value:
                 setattr(record, key, value)
-
-    api_patch_field_whitelist = ()
-
-    def api_patch(self, **kwargs):
-        """Edit the record from an api call"""
-        patch_keys_not_allowed = []
-        for key in kwargs:
-            if key not in self.api_patch_field_whitelist:
-                patch_keys_not_allowed.append(key)
-        if len(patch_keys_not_allowed) > 0:
-            raise exc.DomainForbiddenError(
-                f"Forbidden to patch keys {patch_keys_not_allowed}"
-            )
-        self.edit(**kwargs)
 
     workflow_field = "workflow_state"
 
