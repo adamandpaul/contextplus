@@ -2,8 +2,6 @@
 
 from .. import exc
 
-import zlib
-
 
 class TraversalBehaviour(object):
 
@@ -33,16 +31,11 @@ class TraversalBehaviour(object):
     @property
     def path_names(self):
         """Return a tuple of path names"""
-        items = []
-        for item in sorted(list(self.iter_ancestors()), reverse=True):
-            items.append(item.name)
-        items.append(self.name)
+        items = [self.name]
+        for ancestor in self.iter_ancestors():
+            items.append(ancestor.name)
+        items.reverse()
         return tuple(items)
-
-    @property
-    def path_hash(self):
-        data = repr(self.path_names).encode("utf8")
-        return hex(zlib.adler32(data))[2:]
 
     @property
     def root(self):

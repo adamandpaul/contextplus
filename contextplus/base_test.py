@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from . import acquisition
 from . import base
+from .behaviour import acquisition
 from unittest import TestCase
 
 
