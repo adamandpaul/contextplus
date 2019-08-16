@@ -31,7 +31,6 @@ class TestCollectionSet(TestCase):
             self.collection.get_meta_title(),
             "Collection of objects of type MyCollectionItems",
         )
-        self.assertIsNotNone(self.collection.wtforms_collection_criteria)
 
     def test_get(self):
         self.assertEqual(self.collection["aaa"].name, "aaa")
@@ -47,21 +46,3 @@ class TestCollectionSet(TestCase):
         data = self.collection.filter(limit=10, offset=25)
         self.assertEqual(data["total"], 26)
         self.assertEqual(len(data["items"]), 1)
-
-    def test_criteria_from_wtforms_collection_criteria(self):
-        self.assertEqual(
-            self.collection.criteria_from_wtforms_collection_criteria(None), []
-        )
-
-    def test_api_post(self):
-        c = self.collection
-        c.add = Mock()
-        c.api_post_field_whitelist = ("foo",)
-        c.api_post(foo="bar")
-        c.add.assert_called_with(foo="bar")
-
-    def test_api_post_forbidden_field(self):
-        c = self.collection
-        c.api_post_field_whitelist = ("foo",)
-        with self.assertRaises(exc.DomainForbiddenError):
-            c.api_post(size="big")

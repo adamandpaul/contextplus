@@ -2,18 +2,6 @@
 
 from . import base
 from . import exc
-from typing import Iterable
-
-import csv
-import wtforms
-
-
-class WTFormsCollectionCriteria(wtforms.Form):
-    """An empty filter factory"""
-
-
-class WTFormsCollectionAdd(wtforms.Form):
-    """An empty form adder"""
 
 
 class DomainCollection(base.DomainBase):
@@ -22,34 +10,26 @@ class DomainCollection(base.DomainBase):
     """
 
     child_type = None
-    wtforms_collection_criteria = WTFormsCollectionCriteria
-    wtforms_collection_add = None
 
     @classmethod
-    def get_meta_title(cls) -> str:
+    def get_meta_title(cls):
         """A meta title of this kind of object"""
         child_type_meta_title = cls.child_type.get_meta_title()
         return f"Collection of objects of type {child_type_meta_title}"
 
-    def iter_children(self) -> Iterable:
+    def iter_children(self):
         """Iterate through the children of this collection"""
         raise exc.DomainCollectionNotListable()
 
-    def criteria_from_wtforms_collection_criteria(self, criteria_form):
-        """Translate a wtform to a criteria"""
-        return []
-
-    def filter(
-        self, criteria: list = None, limit: int = None, offset: int = None
-    ) -> Iterable:
+    def filter(self, criteria=None, limit=None, offset=None):
         """Return a filtered set of results.
 
         This implementation is very inefficient for big sets.
 
         Args:
-            criteria: This is up to subclasses to implement
-            limit: The maximum items to return
-            offset: Used to calculate the offset together with the page size
+            criteria (list): This is up to subclasses to implement
+            limit (int): The maximum items to return
+            offset (int): Used to calculate the offset together with the page size
 
         Raises:
             DomainCollectionUnsupportedCriteria: If criteria is given.
@@ -106,28 +86,3 @@ class DomainCollection(base.DomainBase):
             if child is not None:
                 return child
         raise exc.DomainTraversalKeyError(key)
-
-    def add(self, **kwargs):
-        """Add a new item"""
-        raise NotImplementedError()
-
-    api_post_field_whitelist = ()
-
-    def api_post(self, **kwargs):
-        """Add a new item from an api call"""
-        post_keys_not_allowed = []
-        for key in kwargs:
-            if key not in self.api_post_field_whitelist:
-                post_keys_not_allowed.append(key)
-        if len(post_keys_not_allowed) > 0:
-            raise exc.DomainForbiddenError(
-                f"Forbidden to post data. Keys not allowed: {post_keys_not_allowed}"
-            )
-        return self.add(**kwargs)
-
-    def write_csv(self, stream):
-        field_names = self.child_type.get_info_key_descriptions().keys()
-        writer = csv.DictWriter(stream, fieldnames=field_names)
-        writer.writeheader()
-        for child in self.iter_children():
-            writer.writerow(child.info_admin_export)
