@@ -42,7 +42,7 @@ class AcquisitionProxy(object):
                 return value
 
         # Nothing found
-        raise exc.DomainAcquisitionAttributeError(name)
+        raise exc.AcquisitionAttributeError(name)
 
 
 class AcquisitionBehaviour(object):

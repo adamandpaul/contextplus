@@ -1,53 +1,45 @@
 # -*- coding:utf-8 -*-
 
 
-try:
-    from pyramid.httpexceptions import HTTPForbidden
-except ImportError:
-
-    class HTTPForbidden(Exception):
-        """Placeholder class for when pyramid is not available"""
-
-
-class DomainError(Exception):
+class ContextPlusError(Exception):
     """An error emitted from the domain code"""
 
 
-class DomainForbiddenError(DomainError, HTTPForbidden):
-    """Raised when an action is forbidden"""
-
-
-class DomainAcquisitionAttributeError(DomainError, AttributeError):
+class AcquisitionAttributeError(ContextPlusError, AttributeError):
     """Attribute not found"""
 
 
-class DomainTraversalKeyError(DomainError, KeyError):
+class TraversalKeyError(ContextPlusError, KeyError):
     """Raised when there is a key error from domain traversal"""
 
 
-class DomainCollectionError(DomainError):
+class CollectionError(ContextPlusError):
     """Raised when there is an error in the domain collection"""
 
 
-class DomainCollectionNotListable(DomainCollectionError):
+class CollectionNotListable(CollectionError):
     """Raised when an attempt is made to list items in a collection
     which cannot be listed"""
 
 
-class DomainCollectionUnsupportedCriteria(DomainCollectionError):
+class CollectionUnsupportedCriteria(CollectionError):
     """Raised when a criteria is given to a collection which is not
     supported"""
 
 
-class DomainRecordIdTypeError(DomainError, TypeError):
+class RecordError(ContextPlusError):
+    """Raised in the context of a record"""
+
+
+class RecordIdTypeError(RecordError, TypeError):
     """Raised when attempting to construct an ID type"""
 
 
-class DomainRecordUpdateError(DomainError):
+class RecordUpdateError(RecordError):
     """Raised when an update failure occurred"""
 
 
-class WorkflowTransitionError(DomainError):
+class WorkflowTransitionError(ContextPlusError):
     """Raised when the system is unble to perform a workflow transition"""
 
 

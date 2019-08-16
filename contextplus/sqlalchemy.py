@@ -4,31 +4,28 @@ from . import collection
 from . import exc
 from . import record
 from typing import Iterable
-from typing import Optional
 
 
-class DomainSQLAlchemyRecord(record.DomainRecord):
+class SQLAlchemyItem(record.RecordItem):
     """A Domain backed by an SQLAlchemy Record"""
 
     @classmethod
-    def from_id(
-        cls, parent=None, name: str = None, id: dict = None
-    ) -> Optional["DomainSQLAlchemyRecord"]:
+    def from_id(cls, parent=None, name=None, id=None):
         """
         Args:
-            parent: The parent object
-            name: The traversal name to get to this object
-            id: The id of the object as a dictionary
+            parent (object): The parent object
+            name (str): The traversal name to get to this object
+            id (dict): The id of the object as a dictionary
 
         Returns:
             the domain object for a given record id or None if it doesn't exist
 
         Raises:
-            DomainRecordIdTypeError: If the id fields don't match cls.id_fields
+            RecordIdTypeError: If the id fields don't match cls.id_fields
         """
         assert id is not None
         if set(id) != set(cls.id_fields):
-            raise exc.DomainRecordIdTypeError(
+            raise exc.RecordIdTypeError(
                 f"Can not retrieve record from invalid id: {id}"
             )
         db_session = parent.acquire.db_session
@@ -39,7 +36,7 @@ class DomainSQLAlchemyRecord(record.DomainRecord):
             return cls(parent=parent, name=name, record=result)
 
 
-class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
+class SQLAlchemyCollection(collection.Collection):
     """A collection of SQLAlchemy Records"""
 
     child_type = None
@@ -76,7 +73,7 @@ class DomainSQLAlchemyRecordCollection(collection.DomainCollection):
                 if key == "filter_by":
                     query = query.filter_by(**value)
                 else:
-                    raise exc.DomainCollectionUnsupportedCriteria(
+                    raise exc.CollectionUnsupportedCriteria(
                         f"Unsupported criteria {key}"
                     )
 

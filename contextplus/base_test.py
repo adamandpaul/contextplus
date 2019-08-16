@@ -5,16 +5,16 @@ from .behaviour import acquisition
 from unittest import TestCase
 
 
-class TestDomainBase(TestCase):
+class TestBase(TestCase):
     def test_init(self):
-        domain = base.DomainBase(None, "my-site")
+        domain = base.Base(None, "my-site")
         self.assertEqual(domain.parent, None)
         self.assertEqual(domain.name, "my-site")
 
 
-class TestDomainBaseNoParent(TestCase):
+class TestBaseNoParent(TestCase):
     def setUp(self):
-        self.domain = base.DomainBase(None, "my-site")
+        self.domain = base.Base(None, "my-site")
 
     def test_name(self):
         d = self.domain
@@ -26,13 +26,13 @@ class TestDomainBaseNoParent(TestCase):
         d = self.domain
         self.assertEqual(d.__name__, "my-site")
         self.assertEqual(d.__parent__, None)
-        self.assertEqual(d.title, "DomainBase: my-site")
+        self.assertEqual(d.title, "Base: my-site")
         self.assertEqual(d.description, "")
 
     def test_acquire(self):
         acquire = self.domain.acquire
         self.assertIsInstance(acquire, acquisition.AcquisitionProxy)
-        self.assertEqual(acquire.title, "DomainBase: my-site")
+        self.assertEqual(acquire.title, "Base: my-site")
 
     def test_iter_ancestors(self):
         self.assertEqual(list(self.domain.iter_ancestors()), [])
@@ -47,10 +47,10 @@ class TestDomainBaseNoParent(TestCase):
         self.assertEqual(self.domain.get("foo", 33), 33)
 
 
-class TestDomainBaseWithParent(TestCase):
+class TestBaseWithParent(TestCase):
     def setUp(self):
-        self.parent = base.DomainBase(None, "parent-item")
-        self.child = base.DomainBase(self.parent, "child-item")
+        self.parent = base.Base(None, "parent-item")
+        self.child = base.Base(self.parent, "child-item")
 
     def test_simple_attributes(self):
         self.assertEqual(self.child.parent, self.parent)

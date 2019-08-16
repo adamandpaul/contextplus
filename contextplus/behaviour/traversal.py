@@ -13,7 +13,7 @@ class TraversalBehaviour(object):
         Raises:
             DomainTraversalKeyError: If there is not item to return
         """
-        raise exc.DomainTraversalKeyError(key)
+        raise exc.TraversalKeyError(key)
 
     def get(self, key: str, default=None):
         """Convenience method to return a default value when there is a KeyError"""

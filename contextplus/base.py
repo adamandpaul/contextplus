@@ -8,7 +8,7 @@ from .behaviour.named_resource import NamedResourceBehaviour
 from .behaviour.traversal import TraversalBehaviour
 
 
-class DomainBase(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviour):
+class Base(NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviour):
     """The base domain object which all domain objects inherit.
 
     Designed to apply common functions to all domain objects.

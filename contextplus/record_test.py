@@ -4,16 +4,15 @@ from . import exc
 from . import record
 from unittest import TestCase
 from unittest.mock import MagicMock
-from unittest.mock import Mock
 
 
-class TestDomainRecord(TestCase):
+class TestRecordItem(TestCase):
     def setUp(self):
         db_record = MagicMock()
         db_record.record_id = "abc"
         self.db_record = db_record
 
-        class MyRecord(record.DomainRecord):
+        class MyRecord(record.RecordItem):
             id_fields = ("record_id",)
             record_type = MagicMock()
 
@@ -33,5 +32,5 @@ class TestDomainRecord(TestCase):
         del self.record.record_type.missing
         data = ["missing", "_protected", "record_id"]
         for field_name in data:
-            with self.assertRaises(exc.DomainRecordUpdateError):
+            with self.assertRaises(exc.RecordUpdateError):
                 self.record.edit(**{field_name: "foo"})

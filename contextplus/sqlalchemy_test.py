@@ -5,16 +5,14 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 
-class TestDomainSQLAlchemyRecord(TestCase):
+class TestSQLAlchemyItem(TestCase):
     def test_from_id(self):
         cls = MagicMock()  # we mock the class so we can it as an object factory
         cls.id_fields = ("record_id",)
         parent = MagicMock()
         id = {"record_id": "blah"}
 
-        domain = sqlalchemy.DomainSQLAlchemyRecord.from_id.__func__(
-            cls, parent, "foo", id
-        )
+        domain = sqlalchemy.SQLAlchemyItem.from_id.__func__(cls, parent, "foo", id)
 
         db_session = parent.acquire.db_session
         db_session.query.assert_called_with(cls.record_type)
@@ -32,14 +30,14 @@ class TestDomainSQLAlchemyRecord(TestCase):
 
 class TestDomainSQLAlchemyRecordCollection(TestCase):
     def test_default_order_by_fields(self):
-        collection = sqlalchemy.DomainSQLAlchemyRecordCollection()
+        collection = sqlalchemy.SQLAlchemyCollection()
         collection.child_type = MagicMock()
         self.assertEqual(
             collection.default_order_by_fields, collection.child_type.id_fields
         )
 
     def test_child_from_record(self):
-        collection = sqlalchemy.DomainSQLAlchemyRecordCollection()
+        collection = sqlalchemy.SQLAlchemyCollection()
         collection.child_type = MagicMock()
         collection.name_from_child = MagicMock()
         record = MagicMock()
@@ -51,7 +49,7 @@ class TestDomainSQLAlchemyRecordCollection(TestCase):
         self.assertEqual(child, collection.child_type.return_value)
 
     def test_query(self):
-        collection = sqlalchemy.DomainSQLAlchemyRecordCollection()
+        collection = sqlalchemy.SQLAlchemyCollection()
         collection.parent = MagicMock()
         collection.child_type = MagicMock()
         query = collection.query([{"filter_by": {"record_id": "abc"}}])
@@ -64,7 +62,7 @@ class TestDomainSQLAlchemyRecordCollection(TestCase):
         self.assertEqual(query, q)
 
     def test_filter(self):
-        collection = sqlalchemy.DomainSQLAlchemyRecordCollection()
+        collection = sqlalchemy.SQLAlchemyCollection()
         collection.query = MagicMock()
         collection.child_type = MagicMock()
         collection.child_from_record = MagicMock()
@@ -94,7 +92,7 @@ class TestDomainSQLAlchemyRecordCollection(TestCase):
         )
 
     def test_iter_children(self):
-        collection = sqlalchemy.DomainSQLAlchemyRecordCollection()
+        collection = sqlalchemy.SQLAlchemyCollection()
         collection.query = MagicMock()
         collection.child_type = MagicMock()
         collection.child_type.id_fields = ["aaa"]

@@ -4,7 +4,7 @@ from . import base
 from . import exc
 
 
-class DomainCollection(base.DomainBase):
+class Collection(base.Base):
     """A collection of objects, usually contentish, which can be
     traversed by name. By default the collection is empty.
     """
@@ -19,7 +19,7 @@ class DomainCollection(base.DomainBase):
 
     def iter_children(self):
         """Iterate through the children of this collection"""
-        raise exc.DomainCollectionNotListable()
+        raise exc.CollectionNotListable()
 
     def filter(self, criteria=None, limit=None, offset=None):
         """Return a filtered set of results.
@@ -38,7 +38,7 @@ class DomainCollection(base.DomainBase):
         if criteria is None:
             criteria = []
         if len(criteria) > 0:
-            raise exc.DomainCollectionUnsupportedCriteria()
+            raise exc.CollectionUnsupportedCriteria()
 
         total = None
         count = 0
@@ -81,8 +81,8 @@ class DomainCollection(base.DomainBase):
         """
         try:
             return super().__getitem__(key)
-        except KeyError:
+        except KeyError as err:
             child = self.get_child(key)
             if child is not None:
                 return child
-        raise exc.DomainTraversalKeyError(key)
+            raise exc.TraversalKeyError(key) from err

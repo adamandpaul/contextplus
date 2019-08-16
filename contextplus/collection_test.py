@@ -1,10 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from . import collection
-from . import exc
 from unittest import TestCase
 from unittest.mock import MagicMock
-from unittest.mock import Mock
 
 
 class TestCollectionSet(TestCase):
@@ -13,7 +11,7 @@ class TestCollectionSet(TestCase):
         my_child_type = MagicMock()
         my_child_type.get_meta_title.return_value = "MyCollectionItems"
 
-        class MyCollection(collection.DomainCollection):
+        class MyCollection(collection.Collection):
 
             child_type = my_child_type
 

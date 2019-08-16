@@ -5,7 +5,7 @@ from . import base
 from . import exc
 
 
-class DomainRecord(base.DomainBase):
+class RecordItem(base.Base):
     """A single domain record"""
 
     _record = None
@@ -17,7 +17,7 @@ class DomainRecord(base.DomainBase):
         self._record = record
 
     @classmethod
-    def from_id(cls, parent=None, name: str = None, id: dict = None) -> "DomainRecord":
+    def from_id(cls, parent=None, name=None, id=None):
         """Pull a record and construct this domain object"""
         raise NotImplementedError()
 
@@ -37,15 +37,11 @@ class DomainRecord(base.DomainBase):
         record_type = self.record_type
         for key, value in kwargs.items():
             if key.startswith("_"):
-                raise exc.DomainRecordUpdateError(
-                    f"Can not edit protected field: {key}"
-                )
+                raise exc.RecordUpdateError(f"Can not edit protected field: {key}")
             if key in id_fields:
-                raise exc.DomainRecordUpdateError(
-                    f"Can not edit primary key field: {key}"
-                )
+                raise exc.RecordUpdateError(f"Can not edit primary key field: {key}")
             if not hasattr(record_type, key):
-                raise exc.DomainRecordUpdateError(f"Field not found: {key}")
+                raise exc.RecordUpdateError(f"Field not found: {key}")
 
             old_value = getattr(record, key)
             if old_value != value:

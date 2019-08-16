@@ -3,7 +3,7 @@
 from . import base
 
 
-class Site(base.DomainBase):
+class Site(base.Base):
     """A site object which in most cases will be the root object
     """
 
