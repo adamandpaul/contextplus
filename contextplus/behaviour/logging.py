@@ -8,6 +8,7 @@ default_logger = logging.getLogger("contextplus.behaviour.logging.default_logger
 
 
 class LoggingBehaviour(object):
+    """Logging allows a traversal tree to implement persistant in database logging"""
 
     _logger = None
 
