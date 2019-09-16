@@ -18,10 +18,26 @@ class NamedResourceFactoryDecorator(object):
         self.factory = factory
 
     def __get__(self, inst, owner):
+        """Some serious depp python stuff going on here....
+
+        The get magic method allows an object to behave as a class property such as @property.
+        It returns the attribute of the owner instance or owner class depending on if the
+        attribute that is accessed is on the instance or the class object. E.g. A.foo and A().foo
+        both call the __get__ method for a propertyish object "foo". In our case we want
+        self to be returned on the class object so the named resource is discoverable by
+        iterating the class objects contents and testing isinstance, yet the instance of the
+        class needs the function to be working too. So both these need to work::
+
+            obj['foo']
+            obj.get_foo()
+
+        """
 
         if inst is None:
+            # the attribute access is on the class object
             return self
 
+        # return a wrapped factory method for an attribute on an instance object
         def method():
             # Create new resource object
             new_resource = self.factory(inst)
