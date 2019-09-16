@@ -5,6 +5,21 @@ from . import base
 from . import exc
 
 
+def record_property(name):
+    """A read only record property proxy.
+
+    Example::
+        class Obj(...):
+            foo = record_propery('foo')
+    """
+
+    @property
+    def prop(self):
+        return getattr(self._record, name)
+
+    return prop
+
+
 class RecordItem(base.Base):
     """A single domain record"""
 

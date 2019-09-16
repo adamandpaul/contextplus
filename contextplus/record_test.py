@@ -6,6 +6,13 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 
+class TestRecordProperty(TestCase):
+    def test_record_property(self):
+        obj = MagicMock()
+        result = record.record_property("foo").fget(obj)
+        self.assertEqual(result, obj._record.foo)
+
+
 class TestRecordItem(TestCase):
     def setUp(self):
         db_record = MagicMock()
