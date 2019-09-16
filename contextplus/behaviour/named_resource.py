@@ -17,23 +17,29 @@ class NamedResourceFactoryDecorator(object):
         self.name = name
         self.factory = factory
 
-    def __call__(self, inst):
+    def __get__(self, inst, owner):
 
-        # Create new resource object
-        new_resource = self.factory(inst)
+        if inst is None:
+            return self
 
-        # it is a bit presumptions to set the __parent__, so we don't and leave it for the factory
+        def method():
+            # Create new resource object
+            new_resource = self.factory(inst)
 
-        # Set the name of the resource (if the factory hasn't done it)
-        if getattr(new_resource, "__name__", None) is None:
-            if hasattr(
-                new_resource, "set_name"
-            ):  # lets not always assume that we have a pyramid object
-                new_resource.set_name(self.name)
-            else:
-                new_resource.__name__ = self.name
+            # it is a bit presumptions to set the __parent__, so we don't and leave it for the factory
 
-        return new_resource
+            # Set the name of the resource (if the factory hasn't done it)
+            if getattr(new_resource, "__name__", None) is None:
+                if hasattr(
+                    new_resource, "set_name"
+                ):  # lets not always assume that we have a pyramid object
+                    new_resource.set_name(self.name)
+                else:
+                    new_resource.__name__ = self.name
+
+            return new_resource
+
+        return method
 
 
 def resource(name):
@@ -81,7 +87,7 @@ class NamedResourceBehaviour(object):
             cls_item = getattr(cls, cls_name, None)
             if isinstance(cls_item, NamedResourceFactoryDecorator):
                 if cls_item.name == name:
-                    return cls_item(self)
+                    return getattr(self, cls_name)()
         return default
 
     def iter_named_resources(self):
@@ -90,7 +96,7 @@ class NamedResourceBehaviour(object):
         for cls_name in dir(cls):
             cls_item = getattr(cls, cls_name, None)
             if isinstance(cls_item, NamedResourceFactoryDecorator):
-                yield cls_item(self)
+                yield getattr(self, cls_name)()
 
     def __getitem__(self, key):
         """Return an item contained in this contextplus object.

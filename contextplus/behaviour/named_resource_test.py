@@ -23,7 +23,7 @@ class TestNamedResourceFactoryDecorator(TestCase):
         self.assertEqual(decorated.name, "foo")
         self.assertEqual(decorated.factory, function)
         instance = MagicMock()
-        new_resource = decorated(instance)
+        new_resource = decorated.__get__(instance, None)()
         self.assertEqual(new_resource, expected_resource)
         function.assert_called_with(instance)
         expected_resource.set_name.assert_called_with("foo")
@@ -55,6 +55,11 @@ class TestNamedResourceBehaviour(TestCase):
         result2 = self.context.get_named_resource("bar")
         self.assertIsInstance(result2, self.Child)
         self.assertEqual(result2.__name__, "bar")
+
+    def test_normal_functions(self):
+        result = self.context.get_foo()
+        self.assertIsInstance(result, self.Child)
+        self.assertEqual(result.__name__, "foo")
 
     def test_iter_named_resources(self):
         foo_and_bar = list(self.context.iter_named_resources())
