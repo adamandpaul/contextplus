@@ -1,0 +1,72 @@
+#!/bin/bash
+set -e
+
+# Select which python
+PYTHON=${PYTHON:-python3}
+
+# SOURCE_BUILDOUT_CFG is relative to the BUILDOUR_DIR
+SOURCE_BUILDOUT_CFG=buildout/common-pub/buildout.cfg
+
+echo "--> Bootstraping..."
+
+# Figure out the buildout directory
+# =================================
+
+# this script is designed to be placed in a "bin/" sub dir of a buildout project
+BUILDOUT_DIR=`dirname "$0"`/..
+
+# Make BUILDOUT_DIR an absolute path
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # Support MacOS, assuming `brew install coreutils` has been run, see
+  # https://stackoverflow.com/a/4031502
+  echo '--> System - MacOS detected.'
+  BUILDOUT_DIR=$(greadlink -f "$BUILDOUT_DIR")
+else
+  echo '--> System - Assumed Linux.'
+  BUILDOUT_DIR=$(readlink -f "$BUILDOUT_DIR")
+fi
+
+cd $BUILDOUT_DIR
+
+# Make sure we have an extends-cache
+#===================================
+mkdir -p buildout/extends-cache
+
+# Write a buildout/local.cfg
+# ==========================
+
+# Only write the local.cfg if it is not presently there
+if [ ! -f buildout/local.cfg ]
+then
+    echo '--> buildout/local.cfg not found. Creating default.'
+    if [ -f buildout/local.cfg.in ]
+    then
+        cp buildout/local.cfg.in buildout/local.cfg
+    else
+        touch buildout/local.cfg
+    fi
+fi
+
+# Create a buildout.cfg from SOURCE_BUILDOUT_CFG
+# ==============================================
+cp -f $SOURCE_BUILDOUT_CFG buildout.cfg
+
+
+# Create a virtual environment with buildout installed
+# ====================================================
+
+echo '--> Creating virtual environment with zc.buildout installed...'
+$PYTHON -m venv buildout/py
+buildout/py/bin/pip install -U pip
+buildout/py/bin/pip install -U setuptools
+buildout/py/bin/easy_install -U zc.buildout
+
+
+# Pull in any mr.developer sources
+# ================================
+
+echo '--> Installing mr.developer and pulling dependent repositories...'
+buildout/py/bin/buildout -N install mr.developer
+bin/develop update
+
+echo '--> bootstrap done. Ready to build, use bin/build to build the environment.'
