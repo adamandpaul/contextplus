@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# A wrapper for buildout:
+#
+# - Calls the buildout script from the virtualenv created by the bootstrap
+#
+# - Adds the bin dir into the PATH.
+#
+# - Adds an environment var SOURCE_COMMIT
+#
+set -e
+
+# Figure out the buildout directory
+# =================================
+
+# this script is designed to be placed in a "bin/" sub dir of a buildout project
+BUILDOUT_DIR=`dirname "$0"`/..
+
+# Make BUILDOUT_DIR an absolute path
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # Support MacOS, assuming `brew install coreutils` has been run, see
+  # https://stackoverflow.com/a/4031502
+  echo '--> System - MacOS detected.'
+  BUILDOUT_DIR=$(greadlink -f "$BUILDOUT_DIR")
+else
+  echo '--> System - Assumed Linux.'
+  BUILDOUT_DIR=$(readlink -f "$BUILDOUT_DIR")
+fi
+
+cd $BUILDOUT_DIR
+
+# Set PATH and other useful environment vars
+# ==========================================
+BIN_DIR=$BUILDOUT_DIR/bin
+export PATH=$BIN_DIR:$PATH
+export SOURCE_COMMIT=`git rev-parse HEAD`
+
+echo '--> Running buildout...'
+exec buildout/py/bin/buildout "$@"
+
+echo '--> Build done. Refer to the project README in order to know more about what is available.'

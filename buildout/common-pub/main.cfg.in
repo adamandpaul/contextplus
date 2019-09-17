@@ -1,0 +1,16 @@
+# Template file for buildout/main.cfg
+
+[buildout]
+extends =
+# Default buildout directory layour and settings
+    common-pub/00-defaults.cfg
+
+# Tools for egg development. Test runners and linters etc
+#    common-pub/05-egg.cfg
+
+# Sphinx documentation builder
+#    common-pub/06-docs.cfg
+
+# Configuration for egg packages
+# egg = my.egg.name
+# egg-source-directory = my
