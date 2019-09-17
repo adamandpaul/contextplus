@@ -14,7 +14,7 @@
 /Session.vim
 /bin/*
 /buildout-picked.cfg
-# /buildout.cfg
+/buildout.cfg
 /buildout/develop-eggs/
 /buildout/eggs/
 /buildout/extends-cache/
