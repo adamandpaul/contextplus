@@ -19,8 +19,8 @@ class TestBaseNoParent(TestCase):
     def test_name(self):
         d = self.domain
         d.set_name(None)
-        with self.assertRaises(AttributeError):
-            d.__name__
+        self.assertIsNone(d.name)
+        self.assertIsNone(d.__name__)
 
     def test_simple_attributes(self):
         d = self.domain

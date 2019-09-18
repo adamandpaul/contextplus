@@ -44,8 +44,6 @@ class Base(
     def __name__(self):
         """Return the name unless it is None.
         In which case throw an AttributeError"""
-        if self.name is None:
-            raise AttributeError("Name not yet set")
         return self.name
 
     @property
