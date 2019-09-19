@@ -40,8 +40,11 @@ class NamedResourceFactoryDecorator(object):
         # return a wrapped factory method for an attribute on an instance object
         def method():
 
-            cache_key = f'_named_resource_cache_{self.name}'
-            cached_resource = getattr(inst, cache_key, None)
+            try:
+                resource_path_names = inst.path_names + (self.name,)
+                cached_resource = inst.acquire.resource_cache_get(resource_path_names)
+            except AttributeError:
+                cached_resource = None
             if cached_resource is not None:
                 return cached_resource
 
@@ -59,7 +62,10 @@ class NamedResourceFactoryDecorator(object):
                 else:
                     new_resource.__name__ = self.name
 
-            setattr(inst, cache_key, new_resource)
+            try:
+                inst.acquire.resource_cache_save(new_resource)
+            except AttributeError:
+                pass
             return new_resource
 
         return method

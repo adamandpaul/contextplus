@@ -23,11 +23,31 @@ class TestNamedResourceFactoryDecorator(TestCase):
         self.assertEqual(decorated.name, "foo")
         self.assertEqual(decorated.factory, function)
         instance = MagicMock()
-        instance._named_resource_cache_foo = None
+        instance.acquire = None
         new_resource = decorated.__get__(instance, None)()
         self.assertEqual(new_resource, expected_resource)
         function.assert_called_with(instance)
         expected_resource.set_name.assert_called_with("foo")
+
+    def test_named_resource_factory_decorator_with_resource_cache_save(self):
+        function = MagicMock()
+        expected_resource = function.return_value
+        expected_resource.__name__ = None
+        decorated = named_resource.NamedResourceFactoryDecorator("foo", function)
+        instance = MagicMock()
+        instance.acquire.resource_cache_get.return_value = None
+        new_resource = decorated.__get__(instance, None)()
+        self.assertEqual(new_resource, expected_resource)
+        function.assert_called_with(instance)
+        instance.acquire.resource_cache_save.assert_called_with(new_resource)
+
+    def test_named_resource_factory_decorator_with_resource_cache_get(self):
+        function = MagicMock()
+        decorated = named_resource.NamedResourceFactoryDecorator("foo", function)
+        instance = MagicMock()
+        instance.acquire.resource_cache_get.return_value = 'blah'
+        new_resource = decorated.__get__(instance, None)()
+        self.assertEqual(new_resource, 'blah')
 
 
 class TestNamedResourceBehaviour(TestCase):
@@ -56,10 +76,6 @@ class TestNamedResourceBehaviour(TestCase):
         result2 = self.context.get_named_resource("bar")
         self.assertIsInstance(result2, self.Child)
         self.assertEqual(result2.__name__, "bar")
-
-        # check caching works
-        result3 = self.context['foo']
-        self.assertIs(result3, result)
 
     def test_normal_functions(self):
         result = self.context.get_foo()
