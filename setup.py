@@ -20,4 +20,5 @@ setup(name='contextplus',
       install_requires=[
           'setuptools',
           'wtforms',
+          'cachetools',
       ])

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from .. import cache
+import cachetools
 
 
 class ResourceCacheBehaviour(object):
@@ -12,7 +12,7 @@ class ResourceCacheBehaviour(object):
     def resource_cache(self):
         c = self._resource_cache
         if c is None:
-            c = self._recource_cache = cache.LRUCache(self.resource_cache_max_size)
+            c = self._recource_cache = cachetools.LRUCache(maxsize=self.resource_cache_max_size)
         return c
 
     def resource_cache_get(self, key):
@@ -20,8 +20,8 @@ class ResourceCacheBehaviour(object):
 
     def resource_cache_save(self, resource):
         key = resource.path_names
-        self.resource_cache.set(key, resource)
+        self.resource_cache[key] = resource
         return key
 
     def resource_cache_clear(self):
-        self.resource_cache.clear()
+        self._resource_cache = None
