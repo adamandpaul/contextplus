@@ -82,7 +82,18 @@ class Collection(base.Base):
         try:
             return super().__getitem__(key)
         except KeyError as err:
+            try:
+                child_path_names = self.path_names + (key,)
+                cached_child = self.acquire.resource_cache_get(child_path_names)
+            except AttributeError:
+                cached_child = None
+            if cached_child is not None:
+                return cached_child
             child = self.get_child(key)
             if child is not None:
+                try:
+                    self.acquire.resource_cache_save(child)
+                except AttributeError:
+                    pass
                 return child
             raise exc.TraversalKeyError(key) from err
