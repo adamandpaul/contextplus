@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 
 from . import base
+from .behaviour import resource_cache
 
 
-class Site(base.Base):
+class Site(resource_cache.ResourceCacheBehaviour, base.Base):
     """A site object which in most cases will be the root object
     """
 

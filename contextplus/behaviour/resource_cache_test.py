@@ -13,11 +13,11 @@ class TestResourceCacheBehaviour(TestCase):
     def setUp(self):
         self.resource = self.Resource()
 
-    @patch('contextplus.cache.LRUCache')
+    @patch("contextplus.cache.LRUCache")
     def test_cache(self, LRUCache):
         cache = LRUCache.return_value
         self.assertEqual(self.resource.resource_cache, cache)
-        result = self.resource.resource_cache_get('foo')
+        result = self.resource.resource_cache_get("foo")
         self.assertEqual(result, cache.get.return_value)
         obj = MagicMock()
         result = self.resource.resource_cache_save(obj)
