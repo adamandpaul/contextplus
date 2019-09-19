@@ -8,7 +8,12 @@ class LRUCache(object):
 
     def __init__(self, max_size=100):
         self.max_size = max_size
-        self.clear()
+        self.cache = {}
+        self.root = []
+        self.root[:] = [self.root, self.root, None, None]
+        self.hits = 0
+        self.misses = 0
+        self.full = False
 
     def clear(self):
         """Clear the cache and cache statistics"""
