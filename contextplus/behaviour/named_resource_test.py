@@ -29,7 +29,7 @@ class TestNamedResourceFactoryDecorator(TestCase):
         function.assert_called_with(instance)
         expected_resource.set_name.assert_called_with("foo")
 
-    def test_named_resource_factory_decorator_with_resource_cache_save(self):
+    def test_named_resource_factory_decorator_with_resource_cache_set(self):
         function = MagicMock()
         expected_resource = function.return_value
         expected_resource.__name__ = None
@@ -39,7 +39,7 @@ class TestNamedResourceFactoryDecorator(TestCase):
         new_resource = decorated.__get__(instance, None)()
         self.assertEqual(new_resource, expected_resource)
         function.assert_called_with(instance)
-        instance.acquire.resource_cache_save.assert_called_with(new_resource)
+        instance.acquire.resource_cache_set.assert_called_with(instance.path_names + ("foo",), new_resource)
 
     def test_named_resource_factory_decorator_with_resource_cache_get(self):
         function = MagicMock()

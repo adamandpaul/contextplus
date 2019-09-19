@@ -62,7 +62,7 @@ class NamedResourceFactoryDecorator(object):
                     new_resource.__name__ = self.name
 
             try:
-                inst.acquire.resource_cache_save(new_resource)
+                inst.acquire.resource_cache_set(resource_path_names, new_resource)
             except AttributeError:
                 pass
             return new_resource

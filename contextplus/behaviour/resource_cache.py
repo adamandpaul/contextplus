@@ -20,9 +20,12 @@ class ResourceCacheBehaviour(object):
     def resource_cache_get(self, key):
         return self.resource_cache.get(key)
 
+    def resource_cache_set(self, key, resource):
+        self.resource_cache[key] = resource
+
     def resource_cache_save(self, resource):
         key = resource.path_names
-        self.resource_cache[key] = resource
+        self.resource_cache_set(key, resource)
         return key
 
     def resource_cache_clear(self):
