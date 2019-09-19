@@ -39,7 +39,6 @@ class NamedResourceFactoryDecorator(object):
 
         # return a wrapped factory method for an attribute on an instance object
         def method():
-
             try:
                 resource_path_names = inst.path_names + (self.name,)
                 cached_resource = inst.acquire.resource_cache_get(resource_path_names)

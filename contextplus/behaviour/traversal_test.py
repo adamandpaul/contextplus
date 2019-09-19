@@ -8,7 +8,7 @@ class TestTraversal(TestCase):
     def setUp(self):
 
         self.root = traversal.TraversalBehaviour()
-        self.root.name = "root"
+        self.root.name = None
 
         self.mid = traversal.TraversalBehaviour()
         self.mid.name = "mid"
@@ -27,11 +27,12 @@ class TestTraversal(TestCase):
 
     def test_iter_ancestors(self):
         result = [a.name for a in self.leaf.iter_ancestors()]
-        self.assertEqual(result, ["mid", "root"])
+        self.assertEqual(result, ["mid", None])
 
     def test_path_names(self):
         result = self.leaf.path_names
-        self.assertEqual(result, ("root", "mid", "leaf"))
+        self.assertEqual(result, ("", "mid", "leaf"))
+        self.assertEqual(self.root.path_names, ("",))
 
     def test_root(self):
         result = self.leaf.root
