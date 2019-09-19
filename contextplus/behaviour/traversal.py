@@ -31,9 +31,9 @@ class TraversalBehaviour(object):
     @property
     def path_names(self):
         """Return a tuple of path names"""
-        items = [self.name or '']
+        items = [self.name or ""]
         for ancestor in self.iter_ancestors():
-            items.append(ancestor.name or '')
+            items.append(ancestor.name or "")
         items.reverse()
         return tuple(items)
 

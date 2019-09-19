@@ -45,9 +45,9 @@ class TestNamedResourceFactoryDecorator(TestCase):
         function = MagicMock()
         decorated = named_resource.NamedResourceFactoryDecorator("foo", function)
         instance = MagicMock()
-        instance.acquire.resource_cache_get.return_value = 'blah'
+        instance.acquire.resource_cache_get.return_value = "blah"
         new_resource = decorated.__get__(instance, None)()
-        self.assertEqual(new_resource, 'blah')
+        self.assertEqual(new_resource, "blah")
 
 
 class TestNamedResourceBehaviour(TestCase):

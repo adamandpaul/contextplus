@@ -12,7 +12,9 @@ class ResourceCacheBehaviour(object):
     def resource_cache(self):
         c = self._resource_cache
         if c is None:
-            c = self._resource_cache = cachetools.LRUCache(maxsize=self.resource_cache_max_size)
+            c = self._resource_cache = cachetools.LRUCache(
+                maxsize=self.resource_cache_max_size
+            )
         return c
 
     def resource_cache_get(self, key):
