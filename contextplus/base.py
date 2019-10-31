@@ -4,13 +4,18 @@ centered around a URL traversal system.
 """
 
 from .behaviour.acquisition import AcquisitionBehaviour
+from .behaviour.events import EventsBehaviour
 from .behaviour.logging import LoggingBehaviour
 from .behaviour.named_resource import NamedResourceBehaviour
 from .behaviour.traversal import TraversalBehaviour
 
 
 class Base(
-    LoggingBehaviour, NamedResourceBehaviour, AcquisitionBehaviour, TraversalBehaviour
+    LoggingBehaviour,
+    EventsBehaviour,
+    NamedResourceBehaviour,
+    AcquisitionBehaviour,
+    TraversalBehaviour,
 ):
     """The base domain object which all domain objects inherit.
 

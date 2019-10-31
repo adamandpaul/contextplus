@@ -36,11 +36,7 @@ class WorkflowBehaviour(object):
         to_state = transition["to"]
 
         # Perform transition
-        event = {"action": action, "from_state": from_state, "to_state": to_state}
-        before = getattr(self, f"workflow_before_{action}", None)
-        if before is not None:
-            before(event)
+        event_data = {"action": action, "from_state": from_state, "to_state": to_state}
+        self.emit(f"workflow-before-{action}", event_data)
         self.workflow_set_state(to_state)
-        after = getattr(self, f"workflow_after_{action}", None)
-        if after is not None:
-            after(event)
+        self.emit(f"workflow-after-{action}", event_data)

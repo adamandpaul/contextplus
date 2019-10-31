@@ -37,16 +37,19 @@ class TestMockWorkflow(TestCase):
 
     def setUp(self):
         self.instance = self.MockWorkflow()
-        self.instance.workflow_before_publish = Mock()
-        self.instance.workflow_after_publish = Mock()
+        self.instance.emit = Mock()
 
     def test_publish(self):
         self.instance.workflow_action("publish")
         self.assertEqual(self.instance.workflow_state, "public")
-        expected_event = {
+        expected_event_data = {
             "action": "publish",
             "from_state": "private",
             "to_state": "public",
         }
-        self.instance.workflow_before_publish.assert_called_with(expected_event)
-        self.instance.workflow_after_publish.assert_called_with(expected_event)
+        self.instance.emit.assert_any_call(
+            "workflow-before-publish", expected_event_data
+        )
+        self.instance.emit.assert_any_call(
+            "workflow-after-publish", expected_event_data
+        )

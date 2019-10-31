@@ -2,6 +2,7 @@
 # flake8: noqa
 
 from .base import Base
+from .behaviour.events import handle
 from .behaviour.named_resource import resource
 from .behaviour.workflow import WorkflowBehaviour
 from .collection import Collection
