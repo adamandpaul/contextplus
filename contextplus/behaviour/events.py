@@ -91,14 +91,14 @@ class EventsBehaviour(object):
                     unordered.append((cls_item, bound_handler))
         ordered.sort(key=lambda h: h[0].priority)
 
-        # get acquired event handlers
+        # get parent event handlers
         try:
-            acquired = self.acquire.event_handlers
+            parent = self.parent.acquire.event_handlers
         except AttributeError:
-            acquired = []
+            parent = []
 
         # Combine, cache and return
-        handlers = [*ordered, *unordered, *acquired]
+        handlers = [*ordered, *unordered, *parent]
         self._event_handlers = handlers
         return handlers
 

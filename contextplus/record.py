@@ -50,6 +50,8 @@ class RecordItem(base.Base):
         id_fields = self.id_fields
         record = self._record
         record_type = self.record_type
+        self.emit("before-edit", {"kwargs": kwargs})
+        changes = {}
         for key, value in kwargs.items():
             if key.startswith("_"):
                 raise exc.RecordUpdateError(f"Can not edit protected field: {key}")
@@ -61,6 +63,14 @@ class RecordItem(base.Base):
             old_value = getattr(record, key)
             if old_value != value:
                 setattr(record, key, value)
+                changes[key] = {
+                    "old": old_value,
+                    "new": value,
+                }
+        self.emit("after-edit", {
+            "kwargs": kwargs,
+            "changes": changes,
+        })
 
     workflow_field = "workflow_state"
 

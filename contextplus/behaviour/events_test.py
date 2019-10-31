@@ -57,20 +57,20 @@ class TestEventsBehaviour(TestCase):
 
         self.resize_handler = resize_handler = MagicMock(return_value="from resize")
         self.click_handler = click_handler = MagicMock(return_value="from click")
-        self.acquire = MagicMock()
+        self.parent = MagicMock()
 
         self.parent_handler = MagicMock(return_value="from parent click")
         self.parent_handler_decorator = events.HandlerDecorator(
             handler=self.parent_handler, name="click", priority=None
         )
-        self.acquire.event_handlers = [
+        self.parent.acquire.event_handlers = [
             (self.parent_handler_decorator, self.parent_handler)
         ]
 
         class Context(events.EventsBehaviour):
             handle_resize = events.handle("resize")(resize_handler)
             handle_click = events.handle("click", priority=1)(click_handler)
-            acquire = self.acquire
+            parent = self.parent
 
         self.context = Context()
 
