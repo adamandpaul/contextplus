@@ -39,7 +39,9 @@ class TestNamedResourceFactoryDecorator(TestCase):
         new_resource = decorated.__get__(instance, None)()
         self.assertEqual(new_resource, expected_resource)
         function.assert_called_with(instance)
-        instance.acquire.resource_cache_set.assert_called_with(instance.path_names + ("foo",), new_resource)
+        instance.acquire.resource_cache_set.assert_called_with(
+            instance.path_names + ("foo",), new_resource
+        )
 
     def test_named_resource_factory_decorator_with_resource_cache_get(self):
         function = MagicMock()

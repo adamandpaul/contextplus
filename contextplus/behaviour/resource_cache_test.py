@@ -29,8 +29,8 @@ class TestResourceCacheBehaviour(TestCase):
         self.assertEqual(result, obj.path_names)
 
         # Check set with explicit key
-        result = self.resource.resource_cache_set('blah', obj)
-        cache.__setitem__.assert_any_call('blah', obj)
+        result = self.resource.resource_cache_set("blah", obj)
+        cache.__setitem__.assert_any_call("blah", obj)
 
         # Check clear cache
         self.resource.resource_cache_clear()
