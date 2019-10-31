@@ -52,8 +52,9 @@ class TestDomainSQLAlchemyRecordCollection(TestCase):
         collection = sqlalchemy.SQLAlchemyCollection()
         collection.parent = MagicMock()
         collection.child_type = MagicMock()
-        query = collection.query([{"filter_by": {"record_id": "abc"}}])
-
+        query = collection.query(
+            [{"type": "filter_by", "field": "record_id", "value": "abc"}]
+        )
         db_session = collection.acquire.db_session
         db_session.query.assert_called_with(collection.child_type.record_type)
         q = db_session.query.return_value

@@ -69,13 +69,13 @@ class SQLAlchemyCollection(collection.Collection):
 
         # apply any filters
         for criteria_part in criteria:
-            if criteria_part['type'] == 'filter_by':
-                field_name = criteria_part['field']
-                field_value = criteria_part['value']
+            if criteria_part["type"] == "filter_by":
+                field_name = criteria_part["field"]
+                field_value = criteria_part["value"]
                 query = query.filter_by(**{field_name: field_value})
             else:
                 raise exc.CollectionUnsupportedCriteria(
-                    f"Unsupported criteria {key}"
+                    f"Unsupported criteria {criteria_part['type']}"
                 )
 
         return query
