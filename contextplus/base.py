@@ -69,3 +69,10 @@ class Base(
     def set_name(self, name=None):
         """Allow setting the name"""
         self.name = name
+
+    def __repr__(self):
+        module = self.__class__.__module__
+        class_name = self.__class__.__name__
+        hex_id = hex(id(self))
+        path = '/'.join(self.path_names) or '/'
+        return f'<{module}.{class_name} object at {hex_id} {path}>'

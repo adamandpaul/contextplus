@@ -12,10 +12,11 @@ class Foo(DomainBase):
 
 
 class NamedResourceFactoryDecorator(object):
-    def __init__(self, name, factory):
+    def __init__(self, name, factory, no_cache):
         """Initialize decorator"""
         self.name = name
         self.factory = factory
+        self.no_cache = no_cache
 
     def __get__(self, inst, owner):
         """Some serious depp python stuff going on here....
@@ -61,18 +62,19 @@ class NamedResourceFactoryDecorator(object):
                 else:
                     new_resource.__name__ = self.name
 
-            try:
-                inst.acquire.resource_cache_set(resource_path_names, new_resource)
-            except AttributeError:
-                pass
+            if not self.no_cache:
+                try:
+                    inst.acquire.resource_cache_set(resource_path_names, new_resource)
+                except AttributeError:
+                    pass
             return new_resource
 
         return method
 
 
-def resource(name):
+def resource(name, no_cache=False):
     def config_factory(factory):
-        return NamedResourceFactoryDecorator(name=name, factory=factory)
+        return NamedResourceFactoryDecorator(name=name, factory=factory, no_cache=no_cache)
 
     return config_factory
 

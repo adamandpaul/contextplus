@@ -20,6 +20,16 @@ def record_property(name):
     return prop
 
 
+def id_property(name):
+    """A read only record property proxy"""
+
+    @property
+    def prop(self):
+        return self.id[name]
+
+    return prop
+
+
 class RecordItem(base.Base):
     """A single domain record"""
 
@@ -36,13 +46,22 @@ class RecordItem(base.Base):
         """Pull a record and construct this domain object"""
         raise NotImplementedError()
 
+    _id_cache = None
+
     @property
     def id(self) -> dict:
-        """Return the records ID"""
+        """Return the records ID
+
+        Uses an id cache to prevent the repopulation of the entire record
+        across db sessions
+        """
+        if self._id_cache is not None:
+            return self._id_cache
         record = self._record
         value = {}
         for field_name in self.id_fields:
             value[field_name] = getattr(record, field_name)
+        self._id_cache = value
         return value
 
     def edit(self, **kwargs):
