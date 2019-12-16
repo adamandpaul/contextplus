@@ -22,17 +22,17 @@ class Event(object):
 
 
 class HandlerDecorator(object):
-    def __init__(self, handler, name=None, priority=None):
+    def __init__(self, handler, event_names=None, priority=None):
         """Initialize decorator"""
         self.handler = handler
-        self.name = name
+        self.event_names = event_names
         self.priority = priority
 
     def match(self, event):
-        if self.name is None:
+        if self.event_names is None:
             return True
         else:
-            return event.name == self.name
+            return event.name in self.event_names
 
     def __get__(self, inst, owner):
         """Some serious depp python stuff going on here....
@@ -57,9 +57,9 @@ class HandlerDecorator(object):
         return method
 
 
-def handle(name=None, priority=None):
+def handle(*event_names, priority=None):
     def config_handler(handler):
-        return HandlerDecorator(handler=handler, name=name, priority=priority)
+        return HandlerDecorator(handler=handler, event_names=event_names, priority=priority)
 
     return config_handler
 
@@ -104,6 +104,7 @@ class EventsBehaviour(object):
 
     def emit(self, name, data=None):
         """Emit an event to event handlers from the property self.event_handlers"""
+        data = data or {}
         event = Event(self, name, data)
         for decorated, bound_handler in self.event_handlers:
             if decorated.match(event):

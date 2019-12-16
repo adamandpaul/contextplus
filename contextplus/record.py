@@ -95,7 +95,7 @@ class RecordItem(base.Base):
 
     def workflow_set_state(self, state):
         """Set a workflow state on the record identified by workflow_field"""
-        self.edit(**{self.workflow_field: state})
+        setattr(self._record, self.workflow_field, state)
 
     @property
     def workflow_state(self):

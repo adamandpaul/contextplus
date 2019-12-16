@@ -147,7 +147,8 @@ class SQLAlchemyCollection(collection.Collection):
     def add(self, **kwargs):
         """Create a new item"""
         record = self.child_type.record_type(**kwargs)
-        self.acquire.db_session.add(record)
+        db_session = self.acquire.db_session
+        db_session.add(record)
         child = self.child_from_record(record)
         child.emit("created")
         return child
