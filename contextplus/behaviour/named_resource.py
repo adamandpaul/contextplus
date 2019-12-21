@@ -51,6 +51,9 @@ class NamedResourceFactoryDecorator(object):
             # Create new resource object
             new_resource = self.factory(inst)
 
+            if new_resource is None:
+                return None
+
             # it is a bit presumptions to set the __parent__, so we don't and leave it for the factory
 
             # Set the name of the resource (if the factory hasn't done it)
@@ -126,7 +129,10 @@ class NamedResourceBehaviour(object):
         for cls_name in dir(cls):
             cls_item = getattr(cls, cls_name, None)
             if isinstance(cls_item, NamedResourceFactoryDecorator):
-                yield getattr(self, cls_name)()
+                factory = getattr(self, cls_name)
+                item = factory()
+                if item:
+                    yield item
 
     def __getitem__(self, key):
         """Return an item contained in this contextplus object.
