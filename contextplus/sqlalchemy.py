@@ -75,7 +75,7 @@ class SQLAlchemyCollection(collection.Collection):
                 field_name = criteria_part["field"]
                 field_value = criteria_part["value"]
                 query = query.filter_by(**{field_name: field_value})
-            if criteria_part["type"] == "sub_string":
+            elif criteria_part["type"] == "sub_string":
                 field_name = criteria_part["field"]
                 field = getattr(self.child_type.record_type, field_name)
                 sub_string = criteria_part["value"]
