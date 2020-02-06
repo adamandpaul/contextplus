@@ -5,6 +5,8 @@ from . import exc
 from . import record
 from typing import Iterable
 
+import sqlalchemy
+
 
 class SQLAlchemyItem(record.RecordItem):
     """A Domain backed by an SQLAlchemy Record"""
@@ -73,6 +75,14 @@ class SQLAlchemyCollection(collection.Collection):
                 field_name = criteria_part["field"]
                 field_value = criteria_part["value"]
                 query = query.filter_by(**{field_name: field_value})
+            if criteria_part["type"] == "sub_string":
+                field_name = criteria_part["field"]
+                field = getattr(self.child_type.record_type, field_name)
+                sub_string = criteria_part["value"]
+                sub_string = sub_string.lower()
+                query = query.filter(
+                    sqlalchemy.func.lower(field).contains(sub_string)
+                )
             else:
                 raise exc.CollectionUnsupportedCriteria(
                     f"Unsupported criteria {criteria_part['type']}"
