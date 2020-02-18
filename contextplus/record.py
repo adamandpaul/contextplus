@@ -20,6 +20,17 @@ def record_property(name):
     return prop
 
 
+def map_record_property(*names):
+    """Map a set of record property attributes into a class definition
+    for which the return value is the attribue from the record object
+    """
+    def wrapper(klass):
+        for name in names:
+            setattr(klass, name, record_property(name))
+        return klass
+    return wrapper
+
+
 def id_property(name):
     """A read only record property proxy"""
 
